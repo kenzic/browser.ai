@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   X,
   RotateCw,
@@ -6,28 +6,33 @@ import {
   ChevronLeft,
   Plus,
   Loader,
-} from "lucide-react";
+} from 'lucide-react';
 
 interface IconProps {
+  // eslint-disable-next-line react/require-default-props
   className?: string;
 }
 
-export const IconLoading: React.FC<IconProps> = (props) => (
-  <Loader {...props} />
+export const IconLoading: React.FC<IconProps> = ({ className }) => (
+  <Loader className={className} />
 );
 
-export const IconClose: React.FC<IconProps> = (props) => <X {...props} />;
-
-export const IconPlus: React.FC<IconProps> = (props) => <Plus {...props} />;
-
-export const IconReload: React.FC<IconProps> = (props) => (
-  <RotateCw {...props} />
+export const IconClose: React.FC<IconProps> = ({ className }) => (
+  <X className={className} />
 );
 
-export const IconLeft: React.FC<IconProps> = (props) => (
-  <ChevronLeft {...props} />
+export const IconPlus: React.FC<IconProps> = ({ className }) => (
+  <Plus className={className} />
 );
 
-export const IconRight: React.FC<IconProps> = (props) => (
-  <ChevronRight {...props} />
+export const IconReload: React.FC<IconProps> = ({ className }) => (
+  <RotateCw className={className} />
+);
+
+export const IconLeft: React.FC<IconProps> = ({ className }) => (
+  <ChevronLeft className={className} />
+);
+
+export const IconRight: React.FC<IconProps> = ({ className }) => (
+  <ChevronRight className={className} />
 );

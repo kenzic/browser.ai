@@ -1,6 +1,6 @@
-import { ipcRenderer, IpcRendererEvent } from "electron";
-import { useEffect, useState } from "react";
-import { TabConfig, TabConfigs, TabsList, TabID } from "../types";
+import { type IpcRendererEvent } from 'electron';
+import { useEffect, useState } from 'react';
+import { TabConfig, TabConfigs, TabsList, TabID } from '../types';
 
 type TabUpdateValue = { confs: TabConfigs; tabs: TabsList };
 
@@ -10,44 +10,38 @@ export default function useConnect(
   options: {
     onTabsUpdate?: (tab: TabUpdateValue) => void;
     onTabActive?: (activeTab: TabConfig) => void;
-  } = {}
+  } = {},
 ) {
   const { onTabsUpdate = noop, onTabActive = noop } = options;
-  const [tabs, setTabs] = useState<TabConfigs>(() => ({} as TabConfigs));
+  const [tabs, setTabs] = useState<TabConfigs>(() => ({}) as TabConfigs);
   const [tabIDs, setTabIDs] = useState<TabsList>([]);
   const [activeID, setActiveID] = useState<number | null>(null);
 
-  const channels = [
-    [
-      "tabs-update",
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    window.browserai.controls.controlReady();
+    const destoryTabsUpdate = window.browserai.controls.onTabsUpdate(
       (e: IpcRendererEvent, value: TabUpdateValue) => {
         setTabIDs(value.tabs);
         setTabs(value.confs);
         onTabsUpdate(value);
       },
-    ],
-    [
-      "active-update",
+    );
+
+    const destroyActiveUpdate = window.browserai.controls.onActiveUpdate(
       (e: IpcRendererEvent, value: TabID) => {
         setActiveID(value);
         if (tabs[value as keyof TabConfigs]) {
           onTabActive(tabs[value as keyof TabConfigs]);
         }
       },
-    ],
-  ] as const;
-
-  useEffect(() => {
-    ipcRenderer.send("control-ready");
-
-    channels.forEach(([name, listener]) => ipcRenderer.on(name, listener));
+    );
 
     return () => {
-      channels.forEach(([name, listener]) =>
-        ipcRenderer.removeListener(name, listener)
-      );
+      destoryTabsUpdate();
+      destroyActiveUpdate();
     };
-  }, []);
+  }, [tabs, onTabsUpdate, onTabActive]);
 
   return { tabIDs, tabs, activeID };
 }

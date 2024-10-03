@@ -1,13 +1,13 @@
-import { Menu, app } from 'electron'
-import Browser from './browser/index.js'
+import { Menu, app } from 'electron';
+import Browser from '../browser/index';
 
-const currentYear = new Date().getFullYear().toString()
+const currentYear = new Date().getFullYear().toString();
 
 export const setupMenu = (browser: Browser) => {
-  const isMac = process.platform === 'darwin'
+  const isMac = process.platform === 'darwin';
 
-  const tab = () => browser.currentView
-  const tabWebContent = () => tab()?.webContents
+  const tab = () => browser.currentView;
+  const tabWebContent = () => tab()?.webContents;
 
   const credits = `
   This Prototype was developed with 爱 by Chris Mckenzie in NYC
@@ -15,26 +15,36 @@ export const setupMenu = (browser: Browser) => {
   `;
 
   app.setAboutPanelOptions({
-    applicationName: "Browser.AI",
-    applicationVersion: "Wild Cat",
-    version: "1.0.0",
+    applicationName: 'Browser.AI',
+    applicationVersion: 'Wild Cat',
+    version: '1.0.0',
     credits,
     copyright: `©️ ${currentYear} Chris Mckenzie`,
-    authors: ["Chris Mckenzie"],
-    website: "https://browser-ai.christophermckenzie.com"
+    authors: ['Chris Mckenzie'],
+    website: 'https://browser-ai.christophermckenzie.com',
   });
 
   const template = [
     ...(isMac ? [{ role: 'appMenu' }] : []),
     {
-      role: 'fileMenu', submenu: [
+      role: 'fileMenu',
+      submenu: [
         {
           label: 'New Tab',
           accelerator: 'CmdOrCtrl+T',
           nonNativeMacOSRole: true,
           click: () => browser.newTab(),
         },
-      ]
+        {
+          label: 'Close tab',
+          accelerator: 'CmdOrCtrl+W',
+          nonNativeMacOSRole: true,
+          click: () => {
+            tabWebContent()?.send('close-tab', tab()?.id);
+            // console.log('close tab', tab()?.id);
+          },
+        },
+      ],
     },
     { role: 'editMenu' },
     {
@@ -67,10 +77,8 @@ export const setupMenu = (browser: Browser) => {
       ],
     },
     { role: 'windowMenu' },
-  ]
+  ];
 
-  const menu = Menu.buildFromTemplate(template as any)
-  Menu.setApplicationMenu(menu)
-}
-
-
+  const menu = Menu.buildFromTemplate(template as any);
+  Menu.setApplicationMenu(menu);
+};

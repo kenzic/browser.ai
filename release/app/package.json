@@ -1,0 +1,17 @@
+{
+  "name": "broswer-ai",
+  "version": "0.1.0",
+  "description": "Prototype of a window.ai api for accessing on-device models in the browser",
+  "license": "MIT",
+  "author": {
+    "name": "Chris Mckenzie",
+    "url": "https://card.christophermckenzie.com"
+  },
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "npm run rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+  "dependencies": {}
+}

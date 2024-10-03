@@ -1,13 +1,13 @@
-import { ipcRenderer } from 'electron';
 import { TabID } from '../types';
 
-export const sendEnterURL = (url: string) => ipcRenderer.send('url-enter', url);
+export const sendEnterURL = (url: string) =>
+  window.browserai.controls.actions.sendEnterURL(url);
 
-export const sendChangeURL = (url: string) => ipcRenderer.send('url-change', url);
+export const sendChangeURL = (url: string) =>
+  window.browserai.controls.actions.sendChangeURL(url);
 
-export const sendAct = (actName: string) => {
-  ipcRenderer.send('act', actName);
-};
+export const sendAct = (actName: string) =>
+  window.browserai.controls.actions.sendAct(actName);
 
 export const sendGoBack = () => sendAct('goBack');
 
@@ -17,8 +17,11 @@ export const sendReload = () => sendAct('reload');
 
 export const sendStop = () => sendAct('stop');
 
-export const sendCloseTab = (id: TabID) => ipcRenderer.send('close-tab', id);
+export const sendCloseTab = (id: TabID) =>
+  window.browserai.controls.actions.sendCloseTab(id);
 
-export const sendNewTab = (url?: string, references?: object) => ipcRenderer.send('new-tab', url, references);
+export const sendNewTab = (url?: string, references?: object) =>
+  window.browserai.controls.actions.sendNewTab(url, references);
 
-export const sendSwitchTab = (id: TabID) => ipcRenderer.send('switch-tab', id);
+export const sendSwitchTab = (id: TabID) =>
+  window.browserai.controls.actions.sendSwitchTab(id);

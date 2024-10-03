@@ -3,25 +3,35 @@ export interface StoreType {
     name: string;
     installed: boolean;
   }[];
+  deviceHost?: string;
 }
 
-export type FakeStoreType<T> = { get: (key: keyof T) => T[typeof key], set: (key: string, value: any) => void };
+export type FakeStoreType<T> = {
+  get: (key: keyof T) => T[typeof key];
+  set: (key: string, value: any) => void;
+};
+
+export type StoreInstance = FakeStoreType<StoreType>;
 
 let _store: null = null;
 
 export async function getStore(): Promise<FakeStoreType<StoreType> | null> {
   const schema = {
+    deviceHost: {
+      type: 'string',
+      default: '',
+    },
     localModels: {
-      type: "array",
+      type: 'array',
       default: [],
       items: {
-        type: "object",
+        type: 'object',
         properties: {
           name: {
-            type: "string",
+            type: 'string',
           },
           installed: {
-            type: "boolean",
+            type: 'boolean',
             default: false,
           },
         },
@@ -29,7 +39,7 @@ export async function getStore(): Promise<FakeStoreType<StoreType> | null> {
     },
   };
   if (!_store) {
-    const ElectronStore = (await import('electron-store')).default
+    const ElectronStore = (await import('electron-store')).default;
     // @ts-ignore
     _store = new ElectronStore<StoreType>({ schema });
   }

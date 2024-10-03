@@ -1,4 +1,11 @@
-import { ListResponse } from 'ollama';
+import { z } from 'zod';
+import {
+  chatRequestSchema,
+  connectSessionOptionsSchema,
+  embedOptionsSchema,
+  messageSchema,
+  modelInfoOptionsSchema,
+} from './validate';
 
 export interface Site {
   name: string;
@@ -12,102 +19,60 @@ export interface UserPreferences {
   sites: Site[];
 }
 
+// @final
 export type ModelName = string;
 
+// // @final
+// interface Options {
+//   temperature: number | null; // The temperature of the model. Increasing the temperature will make the model answer more creatively. (Default: 0.8)
+//   stop: string | null; // Sets the stop sequences to use. When this pattern is encountered the LLM will stop generating text and return.
+//   seed: number | null; // Sets the random number seed to use for generation. Setting this to a specific number will make the model generate the same text for the same prompt. (Default: 0)
+//   repeat_penalty: number;
+//   presence_penalty: number;
+//   frequency_penalty: number;
+//   top_k: number;
+//   top_p: number; // Works together with top-k. A higher value (e.g., 0.95) will lead to more diverse text, while a lower value (e.g., 0.5) will generate more focused and conservative text. (Default: 0.9)
+// }
 
-export interface Options {
-  numa: boolean
-  num_ctx: number
-  num_batch: number
-  num_gpu: number // no
-  main_gpu: number // no
-  low_vram: boolean
-  f16_kv: boolean
-  logits_all: boolean
-  vocab_only: boolean
-  use_mmap: boolean // no
-  use_mlock: boolean // no
-  embedding_only: boolean
-  num_thread: number // no
+export type ConnectSessionOptions = z.infer<typeof connectSessionOptionsSchema>;
 
-  // Runtime options
-  num_keep: number
-  seed: number  // yes
-  num_predict: number
-  top_k: number // yes
-  top_p: number // yes
-  tfs_z: number
-  typical_p: number
-  repeat_last_n: number
-  temperature: number // yes
-  repeat_penalty: number
-  presence_penalty: number
-  frequency_penalty: number // yes
-  mirostat: number // no
-  mirostat_tau: number // no
-  mirostat_eta: number // no
-  penalize_newline: boolean // no
-  stop: string[] // yes
-}
-
-
-export type ChatModelSession = {
-  chat: (messages: Message[]) => Promise<ChatResponse>
-}
-
-export type EmbeddingModelSession = {
-  embed: (input: string | string[]) => Promise<EmbedResponse>
-}
-
-export interface CreateSessionOptions {
-  model: string;
-}
-
-export interface ConnectModelConfig {
-  model: string;
-  timeout?: number;
-  maxRetries?: number;
-}
-
-export interface Message {
-  role: string;
-  content: string;
-}
+// @final
+export type Message = z.infer<typeof messageSchema>;
 
 // https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values
 
+export type ChatOptions = z.infer<typeof chatRequestSchema>;
 
-export interface EmbedOptions {
-  model: ModelName;
-  input: string;
-}
+export type FinishReason =
+  | 'stop'
+  | 'length'
+  | 'tool_calls'
+  | 'content_filter'
+  | 'function_call';
 
-export interface ChatRequest {
-  model: string;
-  messages: Message[];
-  stream?: boolean;
-  format?: 'json' | 'plain';
-  options: Partial<Options>;
-}
-
+// @final
 export interface ChatChoice {
   message: Message;
-  finish_reason: 'stop' | 'length' | 'tool_calls' | 'content_filter' | 'function_call';
+  finish_reason: FinishReason;
 }
 
+// @final
+interface ChatResponseUsage {
+  total_duration: number;
+  load_duration: number;
+  prompt_eval_count: number;
+  prompt_eval_duration: number;
+  eval_count: number;
+  eval_duration: number;
+}
+
+// @final
 export interface ChatResponse {
   id: string; // ?
   choices: Array<ChatChoice>;
-  created: number;
+  created: Date;
   model: string;
-  usage: {
-    total_duration: number;
-    load_duration: number;
-    prompt_eval_count: number;
-    prompt_eval_duration: number;
-    eval_count: number;
-    eval_duration: number;
-  };
+  usage: ChatResponseUsage;
 }
 
 export interface LoadModelStatus {
@@ -115,34 +80,24 @@ export interface LoadModelStatus {
   message?: string;
 }
 
-export interface ModelInfoRequest {
-  model: string;
+export type ModelInfoOptions = z.infer<typeof modelInfoOptionsSchema>;
+
+interface ModelDetails {
+  parent_model: string;
+  format: string;
+  family: string;
+  families: string[];
+  parameter_size: string;
+  quantization_level: string;
 }
 
-export type ModelInfo = {
-  details: {
-    parent_model: string;
-    format: string;
-    family: string;
-    families: string[];
-    parameter_size: string;
-    quantization_level: string;
-  }
+export interface ModelInfo {
+  model: string;
+  license: string;
+  details: ModelDetails;
 }
 
-export interface ModelEnabledRequest {
-  model: string;
-};
-
-
-
-export interface EmbedRequest {
-  model: string;
-  input: string | string[];
-  truncate?: boolean;
-  keep_alive?: string | number;
-  options?: Partial<Options>;
-}
+export type EmbedOptions = z.infer<typeof embedOptionsSchema>;
 
 export interface EmbedResponse {
   model: string;
@@ -150,53 +105,24 @@ export interface EmbedResponse {
 }
 
 export interface ModelSession {
-  chat: (options: ChatRequest) => Promise<ChatResponse>;
-  embed: (options: EmbedRequest) => Promise<EmbedResponse>;
-}
-
-export interface EmbeddingsRequest {
-  model: string;
-  prompt: string;
-  keep_alive?: string | number;
-  options?: Partial<Options>;
-}
-
-export interface EmbedResponse {
-  model: string;
-  embeddings: number[][];
-}
-
-export interface EmbeddingsResponse {
-  embedding: number[];
-}
-
-export interface ProgressResponse {
-  status: string;
-  digest: string;
-  total: number;
-  completed: number;
-}
-
-export type PermissionResponse = {
-  model: ModelName;
-  available: boolean;
+  chat: (options: ChatOptions) => Promise<ChatResponse>;
+  embed: (options: EmbedOptions) => Promise<EmbedResponse>;
 }
 
 export type RequestFuncOptions = { model: ModelName };
 
 export type ModelResponse = {
-  model: ModelName;
-  available: boolean;
-}
-
+  name: ModelName;
+  model: string;
+};
 
 export interface Permissions {
-  models: () => Promise<ModelResponse[]>,
-  request: (requestOptions: RequestFuncOptions) => Promise<PermissionResponse>
+  models: () => Promise<ModelResponse[]>;
+  request: (options: RequestFuncOptions) => Promise<boolean>;
 }
 export interface ModelProp {
-  connect(connectionOptions: ConnectModelConfig): Promise<ModelSession>;
-  info(options: ModelInfoRequest): Promise<ModelInfo>;
+  connect(options: ConnectSessionOptions): Promise<ModelSession>;
+  info(options: ModelInfoOptions): Promise<ModelInfo>;
 }
 export interface AI {
   permissions: Permissions;

@@ -71,11 +71,24 @@
 }
 
 @layer base {
+  /* @font-face {
+    font-family: 'Helvetica Neue';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  } */
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+}
+
+@layer components {
+  .tab.active + .tab {
+    @apply border-l-0;
   }
 }
