@@ -25,7 +25,8 @@ const configuration: webpack.Configuration = {
 
   entry: {
     main: path.join(webpackPaths.srcMainPath, 'main.ts'),
-    preload: path.join(webpackPaths.srcPath, 'browser', 'preload.ts'),
+    preloadPublic: path.join(webpackPaths.srcPreloadPath, 'public.ts'),
+    preloadPrivate: path.join(webpackPaths.srcPreloadPath, 'private.ts'),
   },
 
   output: {

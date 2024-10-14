@@ -11,6 +11,7 @@ const srcPath = path.join(rootPath, 'src');
 const srcMainPath = path.join(srcPath, 'main');
 const srcRendererPath = path.join(srcPath, 'renderer');
 const srcBrowserPath = path.join(srcPath, 'browser');
+const srcPreloadPath = path.join(srcBrowserPath, 'preload');
 
 const releasePath = path.join(rootPath, 'release');
 const appPath = path.join(releasePath, 'app');
@@ -32,6 +33,7 @@ export default {
   srcMainPath,
   srcRendererPath,
   srcBrowserPath,
+  srcPreloadPath,
   releasePath,
   appPath,
   appPackagePath,

@@ -121,6 +121,7 @@ const configuration: webpack.Configuration = {
     new HtmlWebpackPlugin({
       filename: 'controls.html',
       template: path.join(webpackPaths.srcPath, 'lib', 'template.html'),
+      title: 'Controls',
       chunks: ['controls'],
       minify: {
         collapseWhitespace: true,
@@ -134,6 +135,7 @@ const configuration: webpack.Configuration = {
     new HtmlWebpackPlugin({
       filename: 'settings.html',
       template: path.join(webpackPaths.srcPath, 'lib', 'template.html'),
+      title: 'Model Settings',
       chunks: ['settings'],
       minify: {
         collapseWhitespace: true,

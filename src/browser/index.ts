@@ -57,15 +57,19 @@ interface ChannelEntry {
   listener: ChannelListener;
 }
 
-const preloadPath = app.isPackaged
-  ? path.join(__dirname, 'preload.js')
-  : path.join(__dirname, '../../.erb/dll/preload.js');
+const preloadPublicPath = app.isPackaged
+  ? path.join(__dirname, 'preloadPublic.js')
+  : path.join(__dirname, '../../.erb/dll/preloadPublic.js');
+
+const preloadPrivatePath = app.isPackaged
+  ? path.join(__dirname, 'preloadPrivate.js')
+  : path.join(__dirname, '../../.erb/dll/preloadPrivate.js');
 
 class ControlView extends WebContentsView {
   constructor(controlOptions: object) {
     super({
       webPreferences: {
-        preload: preloadPath,
+        preload: preloadPrivatePath,
         contextIsolation: true,
         nodeIntegration: false,
         // enableRemoteModule: false,
@@ -90,11 +94,30 @@ class WebView extends WebContentsView {
   constructor(options: TabPreferences) {
     super({
       webPreferences: {
-        preload: preloadPath,
+        preload: preloadPublicPath,
         // Set sandbox to support window.opener
         // See: https://github.com/electron/electron/issues/1865#issuecomment-249989894
         sandbox: true,
-        webSecurity: false,
+        webSecurity: true,
+        ...options,
+      },
+    });
+
+    this.id = this.webContents.id;
+  }
+}
+
+class SettingsView extends WebContentsView {
+  id: number;
+
+  constructor(options: TabPreferences) {
+    super({
+      webPreferences: {
+        preload: preloadPrivatePath,
+        // Set sandbox to support window.opener
+        // See: https://github.com/electron/electron/issues/1865#issuecomment-249989894
+        sandbox: true,
+        webSecurity: true,
         ...options,
       },
     });
@@ -293,7 +316,7 @@ export default class Browser extends EventEmitter {
     }
   }
 
-  get currentView(): WebView | null {
+  get currentView(): WebView | SettingsView | null {
     return this.currentViewId ? this.views[this.currentViewId] : null;
   }
 
@@ -462,7 +485,12 @@ export default class Browser extends EventEmitter {
   }
 
   newTab(url?: string, appendTo?: number, tabPreferences: TabPreferences = {}) {
-    const view: WebView = new WebView(tabPreferences);
+    let view: WebView;
+    if (url && isAliasDomain(url)) {
+      view = new SettingsView(tabPreferences);
+    } else {
+      view = new WebView(tabPreferences);
+    }
 
     view.id = view.webContents.id;
 
