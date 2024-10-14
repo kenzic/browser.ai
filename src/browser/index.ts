@@ -11,7 +11,13 @@ import EventEmitter from 'events';
 import log from 'electron-log';
 import path from 'path';
 import config from '../lib/config';
-import { resolveHtmlPath, getAssetPath } from '../lib/utils/main';
+import {
+  resolveHtmlPath,
+  getAssetPath,
+  isAliasDomain,
+  getAliasFromURL,
+  getAliasURL,
+} from '../lib/utils/main';
 
 log.transports.file.level = false;
 log.transports.console.level = false;
@@ -32,13 +38,6 @@ type TabID = number;
 type Tabs = Record<TabID, Tab>;
 
 type TabPreferences = object;
-
-interface Bounds {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
 
 interface BrowserOptions {
   width: number; // browser window's width, default is 1024
@@ -135,13 +134,21 @@ interface BrowserConfig {
 
 export default class Browser extends EventEmitter {
   options: Partial<BrowserOptions>;
+
   win: BaseWindow;
+
   defaultCurrentViewId: TabID | null;
+
   defaultTabConfigs: Tabs;
-  views: Record<TabID, WebView>;
+
+  views: Record<TabID, WebView | SettingsView>;
+
   tabs: TabID[];
+
   ipc: any;
+
   controlView: ControlView | null;
+
   config: BrowserConfig;
 
   constructor(options: Partial<BrowserOptions>) {
@@ -210,6 +217,9 @@ export default class Browser extends EventEmitter {
         this.newTab(this.config.startPage || '');
         this.emit('control-ready', e);
       },
+      'will-navigate': (e: Electron.IpcMainEvent, url: string) => {
+        console.log('will-navigate', url);
+      },
       'url-change': (e: Electron.IpcMainEvent, url: string) => {
         if (this.currentViewId) this.setTabConfig(this.currentViewId, { url });
       },
@@ -230,22 +240,7 @@ export default class Browser extends EventEmitter {
         this.switchTab(id);
       },
       'close-tab': (e: Electron.IpcMainEvent, id: TabID) => {
-        log.debug('close tab ', { id, currentViewId: this.currentViewId });
-        if (id === this.currentViewId) {
-          const removeIndex = this.tabs.indexOf(id);
-          const nextIndex =
-            removeIndex === this.tabs.length - 1 ? 0 : removeIndex + 1;
-          this.setCurrentView(this.tabs[nextIndex]);
-        }
-        this.tabs = this.tabs.filter((v) => v !== id);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { [id]: _, ...newTabConfigs } = this.tabConfigs;
-        this.tabConfigs = newTabConfigs;
-        this.destroyView(id);
-
-        if (this.tabs.length === 0) {
-          this.newTab();
-        }
+        this.closeTab(id);
       },
     });
 
@@ -354,7 +349,10 @@ export default class Browser extends EventEmitter {
   setTabConfig(viewId: number, tabConfig: Partial<Tab>) {
     const tab = this.tabConfigs[viewId];
     const { webContents } = this.views[viewId] || {};
-
+    const alias = getAliasFromURL(tab?.url);
+    if (alias) {
+      tab.url = alias;
+    }
     this.tabConfigs = {
       ...this.tabConfigs,
       [viewId]: {
@@ -364,15 +362,16 @@ export default class Browser extends EventEmitter {
         ...tabConfig,
       },
     };
+
     return this.tabConfigs;
   }
 
   loadURL(url: string): void {
     const { currentView } = this;
     if (!url || !currentView) return;
-    if (url.includes('about:preferences')) {
-      console.log('about:preferences');
-      this.loadURL(resolveHtmlPath('settings.html'));
+    if (isAliasDomain(url)) {
+      const href = getAliasURL(url);
+      this.loadURL(href);
 
       return;
     }
@@ -393,13 +392,6 @@ export default class Browser extends EventEmitter {
       disposition: string,
       winOptions: TabPreferences,
     ) => {
-      console.log('onNewWindow', {
-        e,
-        newUrl,
-        frameName,
-        disposition,
-        winOptions,
-      });
       log.debug('on new-window', { disposition, newUrl, frameName });
 
       if (!new URL(newUrl).host) {
@@ -409,7 +401,7 @@ export default class Browser extends EventEmitter {
       }
 
       e.preventDefault();
-
+      console.log('disposition', disposition);
       if (disposition === 'new-window') {
         // @ts-ignore
         e.newGuest = new BrowserWindow(winOptions);
@@ -505,7 +497,7 @@ export default class Browser extends EventEmitter {
     // Add to manager first
     const lastView = this.currentView;
     this.setCurrentView(view.id);
-    // view.setAutoResize({ width: true, height: true });
+
     this.loadURL(url || this.config.blankPage);
     this.setTabConfig(view.id, {
       title: this.config.blankTitle,
@@ -518,6 +510,25 @@ export default class Browser extends EventEmitter {
     log.debug('switch to tab', viewId);
     this.setCurrentView(viewId);
     this.currentView?.webContents.focus();
+  }
+
+  closeTab(id: number): void {
+    log.debug('close tab ', { id, currentViewId: this.currentViewId });
+    if (id === this.currentViewId) {
+      const removeIndex = this.tabs.indexOf(id);
+      const nextIndex =
+        removeIndex === this.tabs.length - 1 ? 0 : removeIndex + 1;
+      this.setCurrentView(this.tabs[nextIndex]);
+    }
+    this.tabs = this.tabs.filter((v) => v !== id);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { [id]: _, ...newTabConfigs } = this.tabConfigs;
+    this.tabConfigs = newTabConfigs;
+    this.destroyView(id);
+
+    if (this.tabs.length === 0) {
+      this.newTab();
+    }
   }
 
   destroyView(viewId: TabID) {

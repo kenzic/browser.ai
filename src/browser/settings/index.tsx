@@ -139,6 +139,7 @@ export const Display = () => {
       setAvailableModels(new Set(modelNames));
     }
     listModels();
+    checkIsConnectedToOllama();
     const intervalID = setInterval(checkIsConnectedToOllama, 3000);
 
     return () => clearInterval(intervalID);

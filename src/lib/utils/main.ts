@@ -30,6 +30,26 @@ export function resolveHtmlPath(htmlFileName: string) {
 
 export const getAssetPath = (...paths: string[]): string => {
   const fialPath = path.join(RESOURCES_PATH, ...paths);
-  console.log('fialPath', fialPath);
   return fialPath;
 };
+
+const ALIAS_DOMAIN = {
+  'about:preferences': resolveHtmlPath('settings.html'),
+} as const;
+
+export function isAliasDomain(url: string): boolean {
+  return url in ALIAS_DOMAIN;
+}
+
+export function getAliasURL(url: keyof typeof ALIAS_DOMAIN): string {
+  return ALIAS_DOMAIN[url];
+}
+
+export function getAliasFromURL(url: string): keyof typeof ALIAS_DOMAIN | null {
+  if (!url) return null;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const alias = Object.entries(ALIAS_DOMAIN).find(([_, href]) =>
+    url.includes(href),
+  ) as [keyof typeof ALIAS_DOMAIN, string];
+  return alias ? alias[0] : null;
+}

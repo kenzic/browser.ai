@@ -1,8 +1,8 @@
 export interface StoreType {
-  localModels: {
+  localModels: Array<{
     name: string;
     installed: boolean;
-  }[];
+  }>;
   deviceHost?: string;
 }
 
@@ -13,6 +13,7 @@ export type FakeStoreType<T> = {
 
 export type StoreInstance = FakeStoreType<StoreType>;
 
+// eslint-disable-next-line no-underscore-dangle
 let _store: null = null;
 
 export async function getStore(): Promise<FakeStoreType<StoreType> | null> {

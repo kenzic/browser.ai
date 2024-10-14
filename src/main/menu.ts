@@ -10,8 +10,8 @@ export const setupMenu = (browser: Browser) => {
   const tabWebContent = () => tab()?.webContents;
 
   const credits = `
-  This Prototype was developed with 爱 by Chris Mckenzie in NYC
-  The goal of this project is to provide a simple playground to explore the possibilities of on device models accessing via a simple API in the window object
+  This prototype was developed with 爱 by Chris Mckenzie in NYC\n\n
+  The goal of this project is to provide a prototype to explore the possibilities of on device models accessable via a simple API on the window object
   `;
 
   app.setAboutPanelOptions({
@@ -25,7 +25,53 @@ export const setupMenu = (browser: Browser) => {
   });
 
   const template = [
-    ...(isMac ? [{ role: 'appMenu' }] : []),
+    ...(isMac
+      ? [
+          {
+            role: 'appMenu',
+            label: 'Browser.AI',
+            submenu: [
+              {
+                label: 'About Browser.AI',
+                selector: 'orderFrontStandardAboutPanel:',
+              },
+              { type: 'separator' },
+              {
+                label: 'Preferences',
+                submenu: [
+                  {
+                    label: 'Model Settings',
+                    accelerator: 'CmdOrCtrl+,',
+                    click: () => browser.newTab('about:preferences'),
+                  },
+                ],
+              },
+              { type: 'separator' },
+              { label: 'Services', submenu: [] },
+              { type: 'separator' },
+              {
+                label: 'Hide Browser.AI',
+                accelerator: 'Command+H',
+                selector: 'hide:',
+              },
+              {
+                label: 'Hide Others',
+                accelerator: 'Command+Shift+H',
+                selector: 'hideOtherApplications:',
+              },
+              { label: 'Show All', selector: 'unhideAllApplications:' },
+              { type: 'separator' },
+              {
+                label: 'Quit',
+                accelerator: 'Command+Q',
+                click: () => {
+                  app.quit();
+                },
+              },
+            ],
+          },
+        ]
+      : []),
     {
       role: 'fileMenu',
       submenu: [
@@ -37,11 +83,13 @@ export const setupMenu = (browser: Browser) => {
         },
         {
           label: 'Close tab',
-          accelerator: 'CmdOrCtrl+W',
+          accelerator: 'CmdOrCtrl+Shift+W',
           nonNativeMacOSRole: true,
           click: () => {
-            tabWebContent()?.send('close-tab', tab()?.id);
-            // console.log('close tab', tab()?.id);
+            const tabID = tab()?.id;
+            if (tabID) {
+              browser.closeTab(tabID);
+            }
           },
         },
       ],
@@ -77,6 +125,38 @@ export const setupMenu = (browser: Browser) => {
       ],
     },
     { role: 'windowMenu' },
+    {
+      role: 'helpMenu',
+      label: 'Help',
+      submenu: [
+        {
+          label: 'Playground',
+          click: () =>
+            browser.newTab(
+              'https://playground.browser.christophermckenzie.com/',
+            ),
+        },
+        {
+          label: 'Documentation',
+
+          click: () =>
+            browser.newTab(
+              'https://playground.browser.christophermckenzie.com/docs',
+            ),
+        },
+        {
+          label: 'Browser AI API',
+          click: () =>
+            browser.newTab(
+              'https://playground.browser.christophermckenzie.com/api',
+            ),
+        },
+        {
+          label: 'GitHub Repo',
+          click: () => browser.newTab('https://github.com/kenzic/browser.ai'),
+        },
+      ],
+    },
   ];
 
   const menu = Menu.buildFromTemplate(template as any);

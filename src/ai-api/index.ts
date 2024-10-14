@@ -13,19 +13,31 @@ import {
 export const createAPI: AI = {
   permissions: {
     models: async () => {
+      if (!models.isConnected()) {
+        return [];
+      }
       return models.listEnabled();
     },
     request: async (requestOptions: RequestFuncOptions): Promise<boolean> => {
+      if (!models.isConnected()) {
+        return false;
+      }
       return models.isEnabled(requestOptions.model);
     },
   },
   model: {
     info: async (options: ModelInfoOptions): Promise<ModelInfo> => {
+      if (!models.isConnected()) {
+        throw new Error('Not connected to Model');
+      }
       return models.getInformation(options);
     },
     connect: async ({
       model,
     }: ConnectSessionOptions): Promise<ModelSession> => {
+      if (!models.isConnected()) {
+        throw new Error('Not connected to Model');
+      }
       const result = await connectSession({ model });
       // @ts-ignore - Come back to this
       if (!result.active) {

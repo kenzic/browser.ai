@@ -112,7 +112,7 @@ export interface ModelSession {
 export type RequestFuncOptions = { model: ModelName };
 
 export type ModelResponse = {
-  name: ModelName;
+  enabled: boolean;
   model: string;
 };
 

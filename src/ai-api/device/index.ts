@@ -1,12 +1,9 @@
-// @ts-nocheck
 import { ListResponse, Ollama } from 'ollama';
 import config from '../../lib/config';
 import { getStore, StoreInstance } from '../../lib/store';
+import { cleanName } from '../../lib/utils';
 import { formatZodError } from '../../lib/utils/format-zod-error';
 import {
-  ChatOptions,
-  ChatResponse,
-  ConnectSessionOptions,
   LoadModelStatus,
   ModelInfo,
   ModelInfoOptions,
@@ -16,10 +13,6 @@ import {
 import { modelInfoOptionsSchema, modelNameSchema } from '../validate';
 
 const ollama = new Ollama({ host: config.get('ollamaEndpoint') });
-
-export function cleanName(name: string): string {
-  return name.split(':')[0];
-}
 
 function renameCleanModelData(model: ModelInfo): ModelInfo {
   return {
@@ -130,7 +123,7 @@ export const models = {
     const userEnabledModels = await getUserEnabledModels(deviceModels);
     return userEnabledModels.map((model) => ({
       model: cleanName(model.name),
-      available: true,
+      enabled: true,
     }));
   },
   async isConnected(): Promise<boolean> {

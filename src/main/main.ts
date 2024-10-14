@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   app,
   BrowserWindow,
@@ -11,10 +10,10 @@ import { models } from '../ai-api/device/index';
 import { Session } from '../ai-api/device/session';
 import { createAPI } from '../ai-api/index';
 import {
-  RequestFuncOptions,
-  ModelName,
   ConnectSessionOptions,
   ModelInfoOptions,
+  ModelName,
+  RequestFuncOptions,
 } from '../ai-api/types';
 import Browser from '../browser/index';
 import { FakeStoreType, getStore, StoreType } from '../lib/store';
@@ -39,7 +38,6 @@ function createBrowserWindow() {
   const browser = new Browser({
     width,
     height,
-    debug: true, // will open controlPanel's devtools
   });
   return browser;
 }
@@ -48,7 +46,7 @@ ipcMain.handle(
   'device:model:enable',
   async (event: IpcMainInvokeEvent, model: ModelName) => {
     const store = (await getStore()) as FakeStoreType<StoreType>;
-    const localModels = store.get('localModels');
+    const localModels = store.get('localModels') as StoreType['localModels'];
 
     const result = await models.load(model);
     if (result.status === 'success') {
@@ -67,7 +65,7 @@ ipcMain.handle(
   'device:model:disable',
   async (event: IpcMainInvokeEvent, model: ModelName) => {
     const store = (await getStore()) as FakeStoreType<StoreType>;
-    const localModels = store.get('localModels');
+    const localModels = store.get('localModels') as StoreType['localModels'];
     const idx = localModels.findIndex((m) => m.name === model);
     // delete model
     if (idx !== -1) {
@@ -80,11 +78,11 @@ ipcMain.handle(
   },
 );
 
-ipcMain.handle('device:connected', async (event: IpcMainInvokeEvent) => {
+ipcMain.handle('device:connected', async () => {
   return models.isConnected();
 });
 
-ipcMain.handle('ai:permissions:models', async (event: IpcMainInvokeEvent) => {
+ipcMain.handle('ai:permissions:models', async () => {
   return createAPI.permissions.models();
 });
 
@@ -164,6 +162,7 @@ app
     return true;
   })
   .catch((error) => {
+    // eslint-disable-next-line no-console
     console.log('app error', error);
   });
 

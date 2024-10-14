@@ -1,6 +1,6 @@
 const CONFIG = {
   ollamaEndpoint: 'http://localhost:11434',
-  startPage: 'https://www.google.com',
+  startPage: 'https://playground.browser.christophermckenzie.com',
   blankPage: 'about:blank',
   blankTitle: 'New Tab',
   defaultDebug: false,
