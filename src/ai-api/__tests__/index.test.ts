@@ -1,4 +1,3 @@
-import { Ollama } from 'ollama';
 import { createAPI } from '../index';
 
 describe('createAPI api', () => {

@@ -1,11 +1,10 @@
 /**
  * Base webpack config used across other specific configs
  */
-
 import webpack from 'webpack';
 import TsconfigPathsPlugins from 'tsconfig-paths-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import webpackPaths from './webpack.paths';
+// eslint-disable-next-line import/no-relative-packages
 import { dependencies as externals } from '../../release/app/package.json';
 
 const configuration: webpack.Configuration = {

@@ -16,7 +16,6 @@ import {
 
 import '../global.css';
 import { TabID } from '../types';
-import { Badge } from './components/badge';
 
 // eslint-disable-next-line import/prefer-default-export
 export function Control() {

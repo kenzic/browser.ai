@@ -1,5 +1,5 @@
 import { EmbedRequest as OllamaEmbedRequest, Ollama } from 'ollama';
-import { getUserEnabledModels, models } from '../index';
+import { models } from '../index';
 import { Session, connectSession } from '../session';
 import { ChatOptions, EmbedOptions } from '../../types';
 
@@ -114,7 +114,7 @@ describe('session.embed', () => {
     jest.clearAllMocks();
   });
 
-  test.only('should call session.embed with minimal required options', async () => {
+  test('should call session.embed with minimal required options', async () => {
     // eslint-disable-next-line no-underscore-dangle
     const session = Session.create();
 

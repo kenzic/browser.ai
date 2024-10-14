@@ -1,5 +1,5 @@
 {
-  "name": "broswer-ai",
+  "name": "browser-ai",
   "version": "0.1.0",
   "description": "Prototype of a window.ai api for accessing on-device models in the browser",
   "license": "MIT",
