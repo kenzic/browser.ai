@@ -1,7 +1,7 @@
 import { Ollama } from 'ollama';
 import { createAPI } from '../index';
 
-describe('createAI api', () => {
+describe('createAPI api', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
