@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import {
   Table,
@@ -95,13 +94,41 @@ const ConnectionStatus = ({
 }: {
   isConnected: boolean;
 }) => {
+  // const [hostUrl, setHostUrl] = useState('');
+
+  // useEffect(() => {
+  //   async function getHost() {
+  //     const host = await window.browserai.device.getHost();
+  //     setHostUrl(host);
+  //   }
+  //   getHost();
+  // }, [setHostUrl]);
+
   return (
-    <div className="flex items-center space-x-2 p-4 bg-gray-100 rounded-lg shadow-md mb-6">
-      <span className="text-lg font-semibold">Ollama connection Status:</span>
-      <div
-        className={`text-lg font-bold ${isConnected ? 'text-green-500' : 'text-red-500'}`}
-      >
-        {isConnected ? 'Connected' : 'Not Connected'}
+    <div className="flex items-center justify-between space-x-2 p-4 bg-gray-100 rounded-lg shadow-md mb-6">
+      <div>
+        <span className="inline text-lg font-semibold">
+          Ollama connection status:{' '}
+        </span>
+        <div
+          className={`inline text-lg font-bold ${isConnected ? 'text-green-500' : 'text-red-500'}`}
+        >
+          {isConnected ? 'Connected' : 'Not Connected'}
+        </div>
+      </div>
+      <div>
+        {/* <input
+          type="url"
+          className="border-2 p-2 rounded-md"
+          value={hostUrl}
+          onChange={(e) => {
+            const { value } = e.target;
+            setHostUrl(value);
+          }}
+          onBlur={() => {
+            window.browserai.device.setHost(hostUrl);
+          }}
+        /> */}
       </div>
     </div>
   );

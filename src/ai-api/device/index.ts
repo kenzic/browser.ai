@@ -1,4 +1,8 @@
-import { ListResponse, Ollama } from 'ollama';
+import {
+  ListResponse,
+  ModelResponse as OllamaModelResponse,
+  Ollama,
+} from 'ollama';
 import config from '../../lib/config';
 import { getStore, StoreInstance } from '../../lib/store';
 import { cleanName } from '../../lib/utils';
@@ -13,13 +17,6 @@ import {
 import { modelInfoOptionsSchema, modelNameSchema } from '../validate';
 
 const ollama = new Ollama({ host: config.get('ollamaEndpoint') });
-
-function renameCleanModelData(model: ModelInfo): ModelInfo {
-  return {
-    name: cleanName(model.name),
-    model: model.model,
-  };
-}
 
 interface ModelWhitelist {
   domain: string;
@@ -60,13 +57,22 @@ export async function getUserEnabledModels(
 ) {
   const userPreferences = await getUserPreferences();
   const nameSet = new Set(
-    userPreferences.enabledModels.map((item) => item.name),
+    userPreferences.enabledModels.map((item) => item.model),
   );
   return deviceModels.filter((model) => {
-    return nameSet.has(cleanName(model.name));
+    return nameSet.has(cleanName(model.model));
   });
 }
 
+/**
+ * Device API functions.
+ *
+ * This is intentionally left incomplete.
+ * Ultimately, the concept of a "device" should have it's own abstraction layer.
+ * This would allow for the implementation of different devices, such as a local device or a remote device.
+ * For the sake of this prototype, I kept it simple because it didn't want to overcomplicate the codebase, and be too oppinionated about how
+ * the device should be implemented before I have a clear understanding of the total scope of the functionality
+ */
 export const models = {
   _host: config.get('ollamaEndpoint'),
   getClient: () => {
@@ -116,11 +122,19 @@ export const models = {
   },
   async listAvailable(): Promise<ModelResponse[]> {
     const response = await this.getClient().list();
-    return response.models.map(renameCleanModelData);
+
+    return response.models.map((model: OllamaModelResponse): ModelResponse => {
+      return {
+        model: cleanName(model.name),
+        enabled: true,
+      };
+    });
   },
   async listEnabled(): Promise<ModelResponse[]> {
     const deviceModels = await this.listAvailable();
+
     const userEnabledModels = await getUserEnabledModels(deviceModels);
+
     return userEnabledModels.map((model) => ({
       model: cleanName(model.name),
       enabled: true,

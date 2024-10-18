@@ -18,6 +18,7 @@ import {
 import Browser from '../browser/index';
 import { FakeStoreType, getStore, StoreType } from '../lib/store';
 import { getWindowSize } from '../lib/utils/main';
+import config from '../lib/config';
 import { setupMenu } from './menu';
 
 async function loadDebug() {
@@ -41,6 +42,20 @@ function createBrowserWindow() {
   });
   return browser;
 }
+
+ipcMain.handle(
+  'device:host:set',
+  async (event: IpcMainInvokeEvent, url: string) => {
+    const store = (await getStore()) as FakeStoreType<StoreType>;
+    store.set('deviceHost', url);
+    return true;
+  },
+);
+
+ipcMain.handle('device:host:get', async () => {
+  const store = (await getStore()) as FakeStoreType<StoreType>;
+  return store.get('deviceHost') ?? config.get('ollamaEndpoint');
+});
 
 ipcMain.handle(
   'device:model:enable',
