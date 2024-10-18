@@ -3,6 +3,7 @@ dist/
 logs
 *.log
 notes
+.env
 
 # Runtime data
 pids
