@@ -162,23 +162,9 @@ const configuration: webpack.Configuration = {
 
     new ReactRefreshWebpackPlugin(),
 
-    // new HtmlWebpackPlugin({
-    //   filename: path.join('[name].html'),
-    //   template: path.join(webpackPaths.srcPath, 'lib', 'template.html'),
-    //   minify: {
-    //     collapseWhitespace: true,
-    //     removeAttributeQuotes: true,
-    //     removeComments: true,
-    //   },
-    //   isBrowser: false,
-    //   env: process.env.NODE_ENV,
-    //   isDevelopment: process.env.NODE_ENV !== 'production',
-    //   nodeModules: webpackPaths.appNodeModulesPath,
-    // }),
-
     new HtmlWebpackPlugin({
       filename: 'controls.html',
-      template: path.join(webpackPaths.srcPath, 'lib', 'template.html'),
+      template: path.join(webpackPaths.assetsPath, 'template.html'),
       chunks: ['controls'],
       minify: {
         collapseWhitespace: true,
@@ -193,7 +179,7 @@ const configuration: webpack.Configuration = {
 
     new HtmlWebpackPlugin({
       filename: 'settings.html',
-      template: path.join(webpackPaths.srcPath, 'lib', 'template.html'),
+      template: path.join(webpackPaths.assetsPath, 'template.html'),
       chunks: ['settings'],
       minify: {
         collapseWhitespace: true,

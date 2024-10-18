@@ -25,6 +25,8 @@ const distRendererPath = path.join(distPath, 'renderer');
 
 const buildPath = path.join(releasePath, 'build');
 
+const assetsPath = path.join(rootPath, 'assets');
+
 export default {
   rootPath,
   erbNodeModulesPath,
@@ -43,4 +45,5 @@ export default {
   distMainPath,
   distRendererPath,
   buildPath,
+  assetsPath,
 };
