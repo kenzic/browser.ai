@@ -107,9 +107,11 @@
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
-    "electron": "^32.1.2",
+    "dotenv": "^16.4.5",
+    "electron": "^31.3.0",
     "electron-debug": "^4.0.1",
     "electron-log": "^5.2.0",
+    "electron-notarize": "^1.2.2",
     "electron-store": "^10.0.0",
     "electron-updater": "^6.1.4",
     "lucide-react": "^0.446.0",
@@ -145,8 +147,6 @@
     "css-loader": "^7.1.2",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "detect-port": "^1.5.1",
-    "electron": "^31.3.0",
-    "electron-builder": "^24.13.3",
     "electron-devtools-installer": "^3.2.0",
     "electronmon": "^2.0.2",
     "eslint": "^8.49.0",
@@ -163,6 +163,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "electron-builder": "^25.1.8",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.0",
     "identity-obj-proxy": "^3.0.0",
@@ -194,7 +195,7 @@
   },
   "build": {
     "productName": "Browser.AI",
-    "appId": "org.erb.BrowserAI",
+    "appId": "com.2dx3.BrowserAI",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -202,9 +203,9 @@
       "node_modules",
       "package.json"
     ],
+    "afterSign": "./.erb/scripts/notarize.js",
     "mac": {
-      "sign": ".erb/scripts/notarize.js",
-      "notarize": false,
+      "notarize": true,
       "target": {
         "target": "default",
         "arch": [
@@ -216,9 +217,11 @@
       "hardenedRuntime": true,
       "entitlements": "assets/entitlements.mac.plist",
       "entitlementsInherit": "assets/entitlements.mac.plist",
-      "gatekeeperAssess": false
+      "gatekeeperAssess": false,
+      "forceCodeSigning": true
     },
     "dmg": {
+      "sign": false,
       "contents": [
         {
           "x": 130,
