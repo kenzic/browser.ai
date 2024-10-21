@@ -10,7 +10,7 @@ const browserai = {
     ...controls,
     actions,
   },
-};
+} as const;
 
 contextBridge.exposeInMainWorld('ai', ai);
 contextBridge.exposeInMainWorld('browserai', browserai);

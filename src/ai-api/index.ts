@@ -1,16 +1,16 @@
 import { models } from './device/index';
 import { connectSession } from './device/session';
 import {
-  AI,
+  WindowAIHandler,
   ConnectSessionOptions,
   ModelInfo,
   ModelInfoOptions,
   ModelSession,
-  RequestFuncOptions,
+  RequestOptions,
 } from './types';
 
 // eslint-disable-next-line import/prefer-default-export
-export const createAPI: AI = {
+export const handleAPI: WindowAIHandler = {
   permissions: {
     models: async () => {
       if (!models.isConnected()) {
@@ -18,7 +18,7 @@ export const createAPI: AI = {
       }
       return models.listEnabled();
     },
-    request: async (requestOptions: RequestFuncOptions): Promise<boolean> => {
+    request: async (requestOptions: RequestOptions): Promise<boolean> => {
       if (!models.isConnected()) {
         return false;
       }
@@ -46,4 +46,4 @@ export const createAPI: AI = {
       return result;
     },
   },
-};
+} as const;

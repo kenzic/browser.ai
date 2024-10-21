@@ -1,7 +1,7 @@
 export interface StoreType {
   localModels: Array<{
-    name: string;
-    installed: boolean;
+    model: string;
+    enabled: boolean;
   }>;
   deviceHost?: string;
 }
@@ -31,7 +31,7 @@ export async function getStore(): Promise<FakeStoreType<StoreType> | null> {
           name: {
             type: 'string',
           },
-          installed: {
+          enabled: {
             type: 'boolean',
             default: false,
           },

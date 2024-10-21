@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import { AI } from '../../ai-api/types';
+import { WindowAIBinding } from '../../ai-api/types';
 /**
  * @summary
  *
@@ -10,7 +10,7 @@ import { AI } from '../../ai-api/types';
  *
  * For more details, you can read about context isolation here: https://www.electronjs.org/docs/tutorial/context-isolation
  */
-export const ai: AI = {
+export const ai: WindowAIBinding = {
   permissions: {
     models: async () => {
       return ipcRenderer.invoke('ai:permissions:models');
@@ -45,4 +45,4 @@ export const ai: AI = {
       };
     },
   },
-};
+} as const;

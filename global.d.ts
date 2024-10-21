@@ -1,22 +1,23 @@
-import { RequestFuncOptions, ConnectSessionOptions } from './src/ai-api/types';
+import {
+  RequestOptions,
+  ConnectSessionOptions,
+  ModelInfoOptions,
+  ModelInfo,
+  ModelSession,
+} from './src/ai-api/types';
 
 interface AIModel {
   name: string;
-  installed: boolean;
+  enabled: boolean;
 }
-
-interface AISession {
-  chat: () => Promise<unknown>; // Replace 'unknown' with the actual return type
-  embed: () => Promise<unknown>; // Replace 'unknown' with the actual return type
-}
-
 interface AIInterface {
   permissions: {
     models: () => Promise<AIModel[]>;
-    request: (options: RequestFuncOptions) => Promise<boolean>;
+    request: (options: RequestOptions) => Promise<boolean>;
   };
   model: {
-    connect: (options: ConnectSessionOptions) => Promise<AISession>;
+    info: (options: ModelInfoOptions) => Promise<ModelInfo>;
+    connect: (options: ConnectSessionOptions) => Promise<ModelSession>;
   };
 }
 
@@ -48,11 +49,11 @@ interface BrowserAI {
   };
 }
 
-export {};
-
 declare global {
   interface Window {
     ai: AIInterface;
     browserai: BrowserAI;
   }
 }
+
+export {};

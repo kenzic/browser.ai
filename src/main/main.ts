@@ -8,12 +8,12 @@ import {
 
 import { models } from '../ai-api/device/index';
 import { Session } from '../ai-api/device/session';
-import { createAPI } from '../ai-api/index';
+import { handleAPI } from '../ai-api/index';
 import {
   ConnectSessionOptions,
   ModelInfoOptions,
   ModelName,
-  RequestFuncOptions,
+  RequestOptions,
 } from '../ai-api/types';
 import Browser from '../browser/index';
 import { FakeStoreType, getStore, StoreType } from '../lib/store';
@@ -66,8 +66,8 @@ ipcMain.handle(
     const result = await models.load(model);
     if (result.status === 'success') {
       localModels.push({
-        name: model,
-        installed: true,
+        model,
+        enabled: true,
       });
 
       store.set('localModels', localModels);
@@ -98,7 +98,7 @@ ipcMain.handle('device:connected', async () => {
 });
 
 ipcMain.handle('ai:permissions:models', async () => {
-  return createAPI.permissions.models();
+  return handleAPI.permissions.models();
 });
 
 // const sessions = {};
@@ -108,7 +108,7 @@ ipcMain.handle(
   async (event: IpcMainInvokeEvent, options: ModelInfoOptions) => {
     // sessions[id] = Session.create(data);
     // and then this could be destroyed when the window is closed, or session is destroyed
-    return createAPI.model.info({ model: options.model });
+    return handleAPI.model.info({ model: options.model });
   },
 );
 
@@ -117,7 +117,7 @@ ipcMain.handle(
   async (event: IpcMainInvokeEvent, options: ConnectSessionOptions) => {
     // sessions[id] = Session.create(data);
     // and then this could be destroyed when the window is closed, or session is destroyed
-    return createAPI.model.connect({ model: options.model });
+    return handleAPI.model.connect({ model: options.model });
   },
 );
 
@@ -148,10 +148,10 @@ app
 
     ipcMain.handle(
       'ai:permissions:request',
-      async (event: IpcMainInvokeEvent, requestOptions: RequestFuncOptions) => {
-        const available = await createAPI.permissions.request(requestOptions);
+      async (event: IpcMainInvokeEvent, requestOptions: RequestOptions) => {
+        const enabled = await handleAPI.permissions.request(requestOptions);
 
-        if (!available) {
+        if (!enabled && requestOptions?.silent !== true) {
           const userRequest = await dialog.showMessageBox({
             type: 'info',
             title: `Site is requesting access to ${requestOptions.model} model`,
@@ -164,7 +164,7 @@ app
             browser.newTab('about:preferences');
           }
         }
-        return available;
+        return enabled;
       },
     );
 

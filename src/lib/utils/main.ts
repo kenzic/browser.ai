@@ -37,7 +37,7 @@ const ALIAS_DOMAIN = {
   'about:preferences': resolveHtmlPath('settings.html'),
 } as const;
 
-export function isAliasDomain(url: string): boolean {
+export function isAliasDomain(url: string): url is keyof typeof ALIAS_DOMAIN {
   return url in ALIAS_DOMAIN;
 }
 

@@ -3,7 +3,6 @@ import Electron, {
   BrowserWindow,
   BaseWindow,
   WebContentsView,
-  WebContents,
   ipcMain,
   app,
 } from 'electron';
@@ -18,43 +17,20 @@ import {
   getAliasFromURL,
   getAliasURL,
 } from '../lib/utils/main';
+import {
+  TabID,
+  Tab,
+  TabPreferences,
+  Tabs,
+  BrowserOptions,
+  WebContentsActions,
+  BrowserConfig,
+  ChannelListener,
+  ChannelEntry,
+} from './types';
 
 log.transports.file.level = false;
 log.transports.console.level = false;
-
-type WebContentsActions = keyof WebContents;
-interface Tab {
-  url: string;
-  href: string;
-  title: string;
-  favicon: string;
-  isLoading: boolean;
-  canGoBack: boolean;
-  canGoForward: boolean;
-}
-
-type TabID = number;
-
-type Tabs = Record<TabID, Tab>;
-
-type TabPreferences = object;
-
-interface BrowserOptions {
-  width: number; // browser window's width, default is 1024
-  height: number; // browser window's height, default is 800
-  controlPanel: string; // control interface path to load
-  onNewWindow: (event: Event) => void; // custom webContents `new-window` event handler
-  debug: boolean; // toggle debug
-}
-
-interface ChannelListener {
-  (e: Electron.IpcMainEvent, ...args: any[]): void;
-}
-
-interface ChannelEntry {
-  name: string;
-  listener: ChannelListener;
-}
 
 const preloadPublicPath = app.isPackaged
   ? path.join(__dirname, 'preloadPublic.js')
@@ -125,13 +101,6 @@ class SettingsView extends WebContentsView {
   }
 }
 
-interface BrowserConfig {
-  startPage: string;
-  blankPage: string;
-  blankTitle: string;
-  debug: boolean;
-}
-
 export default class Browser extends EventEmitter {
   options: Partial<BrowserOptions>;
 
@@ -189,7 +158,6 @@ export default class Browser extends EventEmitter {
       this.controlView?.setBounds(this.getControlBounds());
     });
 
-    // TODO: These methods are deprecated. Update
     this.win.contentView.addChildView(this.controlView);
     this.controlView.setBounds(this.getControlBounds());
 
@@ -401,7 +369,6 @@ export default class Browser extends EventEmitter {
       }
 
       e.preventDefault();
-      console.log('disposition', disposition);
       if (disposition === 'new-window') {
         // @ts-ignore
         e.newGuest = new BrowserWindow(winOptions);

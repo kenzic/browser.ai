@@ -12,37 +12,38 @@ import {
   ModelInfo,
   ModelInfoOptions,
   ModelName,
-  ModelResponse,
+  EnabledModelResponse,
 } from '../types';
 import { modelInfoOptionsSchema, modelNameSchema } from '../validate';
 
 const ollama = new Ollama({ host: config.get('ollamaEndpoint') });
 
-interface ModelWhitelist {
-  domain: string;
-  models: string[];
-}
+// interface ModelWhitelist {
+//   domain: string;
+//   models: string[];
+// }
 
 interface ModelPreferences {
-  name: string;
-  installed: boolean;
+  model: string;
+  enabled: boolean;
 }
 
 interface UserPreferences {
   enabledModels: ModelPreferences[];
   deviceHost: string;
-  whitelist: ModelWhitelist[];
+  // whitelist: ModelWhitelist[]; // TODO: enable whitelist
 }
 
 async function getUserPreferences(): Promise<UserPreferences> {
   const store = (await getStore()) as StoreInstance;
-  const localModels = store.get('localModels') as ModelPreferences[];
+  const localModels = store.get('localModels') as unknown as ModelPreferences[];
   const deviceHost = (store.get('deviceHost') ||
     config.get('ollamaEndpoint')) as string;
+
   return {
-    enabledModels: localModels?.filter((model) => model.installed) || [],
+    enabledModels: localModels.filter((model) => model.enabled) || [],
     deviceHost,
-    whitelist: [{ domain: 'www.google.com', models: ['llama3.1'] }],
+    // whitelist: [], // TODO: enable whitelist
   };
 }
 
@@ -53,14 +54,14 @@ async function getUserPreferences(): Promise<UserPreferences> {
  * @returns A filtered array of models that are enabled by the user based on their preferences.
  */
 export async function getUserEnabledModels(
-  deviceModels: ListResponse['models'],
+  deviceModels: EnabledModelResponse[],
 ) {
   const userPreferences = await getUserPreferences();
   const nameSet = new Set(
     userPreferences.enabledModels.map((item) => item.model),
   );
   return deviceModels.filter((model) => {
-    return nameSet.has(cleanName(model.model));
+    return nameSet.has(model.model);
   });
 }
 
@@ -84,18 +85,23 @@ export const models = {
       throw new Error(formatZodError(result.error));
     }
 
-    const response = await this.getClient().show(options);
-    if (response.error) {
-      throw new Error(response.error);
-    }
+    try {
+      const response = await this.getClient().show(options);
 
-    return {
-      model: options.model,
-      license: response.license,
-      details: {
-        ...response.details,
-      },
-    };
+      return {
+        model: options.model,
+        license: response.license,
+        details: {
+          ...response.details,
+        },
+      };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error(String(error));
+      }
+    }
   },
   async load(model: ModelName): Promise<LoadModelStatus> {
     const result = modelNameSchema.safeParse(model);
@@ -113,30 +119,31 @@ export const models = {
     } catch (error) {
       return {
         status: 'error',
-        message: error.message,
+        message: (error as Error).message,
       };
     }
   },
   async listRunning(): Promise<ListResponse> {
     return this.getClient().ps();
   },
-  async listAvailable(): Promise<ModelResponse[]> {
+  async listAvailable(): Promise<EnabledModelResponse[]> {
     const response = await this.getClient().list();
-
-    return response.models.map((model: OllamaModelResponse): ModelResponse => {
-      return {
-        model: cleanName(model.name),
-        enabled: true,
-      };
-    });
+    return response.models.map(
+      (model: OllamaModelResponse): EnabledModelResponse => {
+        return {
+          model: cleanName(model.name),
+          enabled: true,
+        };
+      },
+    );
   },
-  async listEnabled(): Promise<ModelResponse[]> {
+  async listEnabled(): Promise<EnabledModelResponse[]> {
     const deviceModels = await this.listAvailable();
 
     const userEnabledModels = await getUserEnabledModels(deviceModels);
 
     return userEnabledModels.map((model) => ({
-      model: cleanName(model.name),
+      model: model.model,
       enabled: true,
     }));
   },
@@ -165,7 +172,7 @@ export const models = {
     const userEnabledModels = await getUserEnabledModels(deviceModels);
 
     return userEnabledModels.some(
-      (enabledModel) => cleanName(enabledModel.name) === model,
+      (enabledModel) => enabledModel.model === model,
     );
   },
   async isRunning(model: ModelName): Promise<boolean> {
