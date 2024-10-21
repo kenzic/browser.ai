@@ -18,6 +18,13 @@ const ollamaClient = {
         eval_count: 370,
         eval_duration: 38854044000,
       }),
+      embed: jest.fn().mockReturnValue({
+        model: 'test-model',
+        embeddings: [[-0.0062045706, -0.013037177, 0.009031619]],
+        total_duration: 10409949560,
+        load_duration: 9907444385,
+        prompt_eval_count: 2,
+      }),
       ps: jest.fn().mockReturnValue({
         models: [
           {
@@ -183,16 +190,26 @@ jest.mock('ollama', () => ollamaClient);
 jest.mock('./src/lib/config');
 jest.mock('./src/lib/store', () => ({
   getStore: jest.fn().mockResolvedValue({
-    get: jest.fn().mockReturnValue([
-      {
-        name: 'test-model',
-        installed: true,
-      },
-      {
-        name: 'gemma2',
-        installed: true,
-      },
-    ]),
+    get: jest.fn().mockImplementation((key) => {
+      if (key === 'localModels') {
+        return [
+          {
+            model: 'test-model',
+            enabled: true,
+          },
+          {
+            model: 'gemma2',
+            enabled: true,
+          },
+        ];
+      }
+
+      if (key === 'deviceHost') {
+        return 'http://localhost:11434';
+      }
+
+      throw new Error('Invalid key passed to store.get mock');
+    }),
     set: jest.fn(),
   }),
 }));

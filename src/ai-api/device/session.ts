@@ -64,7 +64,9 @@ export class Session {
     this.client = ollama;
   }
 
-  static convertChatOptions(chatOptions: ChatOptions): OllamaChatRequest {
+  static convertChatOptions(
+    chatOptions: ChatOptions,
+  ): OllamaChatRequest & { stream: false } {
     const { model, messages, format, options } = chatOptions;
 
     const filteredOptions = options
@@ -72,6 +74,7 @@ export class Session {
       : undefined;
 
     return {
+      stream: false,
       model,
       messages,
       ...(format && { format }),
@@ -126,8 +129,10 @@ export class Session {
   static convertOllamaEmbedResponse(
     response: OllamaEmbedResponse,
   ): EmbedResponse {
+    const id = Math.random().toString(36).substring(2, 15);
     const { model, embeddings } = response;
     return {
+      id,
       model,
       embeddings,
     };

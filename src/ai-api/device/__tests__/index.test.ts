@@ -1,4 +1,8 @@
-import { EmbedRequest as OllamaEmbedRequest, Ollama } from 'ollama';
+import {
+  EmbedRequest as OllamaEmbedRequest,
+  ChatRequest as OllamaChatRequest,
+  Ollama,
+} from 'ollama';
 import { models } from '../index';
 import { Session, connectSession } from '../session';
 import { ChatOptions, EmbedOptions } from '../../types';
@@ -68,10 +72,9 @@ describe('session.chat', () => {
     const result = await session.chat(options);
 
     const ollama = new Ollama();
-
-    const ollamaResponse = (await ollama.chat(
+    const ollamaResponse = await ollama.chat(
       Session.convertChatOptions(options),
-    )) as any;
+    );
 
     expect(result).toEqual({
       ...Session.convertOllamaChatResponse(ollamaResponse),
@@ -132,7 +135,7 @@ describe('session.embed', () => {
     )) as any;
 
     expect(result).toEqual({
-      ...Session.convertOllamaChatResponse(ollamaResponse),
+      ...Session.convertOllamaEmbedResponse(ollamaResponse),
       id: expect.any(String),
     });
   });

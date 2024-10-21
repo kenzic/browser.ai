@@ -1,15 +1,15 @@
-import { createAPI } from '../index';
+import { handleAPI } from '../index';
 
-describe('createAPI api', () => {
+describe('handleAPI api', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   test('should be able to request permissions', async () => {
-    const result1 = await createAPI.permissions.request({
+    const result1 = await handleAPI.permissions.request({
       model: 'gemma2',
     });
-    const result2 = await createAPI.permissions.request({
+    const result2 = await handleAPI.permissions.request({
       model: 'unavailable-model',
     });
     expect(result1).toEqual(true);
@@ -17,8 +17,8 @@ describe('createAPI api', () => {
   });
 
   test('should be able to list avilable models', async () => {
-    const result = await createAPI.permissions.models();
-    expect(result).toEqual([{ available: true, model: 'gemma2' }]);
+    const result = await handleAPI.permissions.models();
+    expect(result).toEqual([{ enabled: true, model: 'gemma2' }]);
   });
 
   test('should be able to return empty list if no models avilable', async () => {
@@ -34,16 +34,16 @@ describe('createAPI api', () => {
 
     // Re-import the module that uses the store
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    const { createAPI } = await import('../index');
+    const { handleAPI } = await import('../index');
 
-    const result = await createAPI.permissions.models();
+    const result = await handleAPI.permissions.models();
     expect(result).toEqual([]);
   });
 
   test('should be able to get model info', async () => {
     jest.resetModules();
 
-    const result = await createAPI.model.info({ model: 'llama3.1' });
+    const result = await handleAPI.model.info({ model: 'llama3.1' });
     expect(result).toEqual({
       details: {
         families: ['llama'],
@@ -63,9 +63,9 @@ describe('createAPI api', () => {
 
     // Re-import the module that uses the store
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    const { createAPI } = await import('../index');
+    const { handleAPI } = await import('../index');
 
-    const result = await createAPI.model.connect({ model: 'llama3.1' });
+    const result = await handleAPI.model.connect({ model: 'llama3.1' });
     expect(result).toEqual({ active: true, model: 'llama3.1' });
   });
 });
