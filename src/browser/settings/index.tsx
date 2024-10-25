@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import availableModelsData from '../../../ollama-models.json';
+import { Skeleton } from './components/skeleton';
+import { Switch } from './components/switch';
 import {
   Table,
   TableBody,
@@ -8,10 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from './components/table';
-import { Skeleton } from './components/skeleton';
-import { Switch } from './components/switch';
-// import { isConnectedToOllama, loadModel } from "../ai-api/device";
-import availableModelsData from '../../../ollama-models.json';
 
 import '../global.css';
 
@@ -151,8 +150,8 @@ const TableSkeleton = () => {
 };
 
 export const Display = () => {
-  const [isConnected, setIsConnected] = React.useState(false);
-  const [availableModels, setAvailableModels] = React.useState(new Set([]));
+  const [isConnected, setIsConnected] = useState(false);
+  const [availableModels, setAvailableModels] = useState(new Set<string>([]));
 
   useEffect(() => {
     async function checkIsConnectedToOllama() {

@@ -11,7 +11,7 @@ import {
   EmbedOptions,
   FinishReason,
   ConnectSessionOptions,
-  ModelSession,
+  PrivateModelSessionConnectionResponse,
 } from '../types';
 import {
   chatRequestSchema,
@@ -25,7 +25,7 @@ import { formatZodError } from '../../lib/utils/format-zod-error';
 export async function connectSession(
   sessionOptions: ConnectSessionOptions,
   ollamaClient: Ollama = new Ollama({ host: config.get('ollamaEndpoint') }),
-): Promise<ModelSession> {
+): Promise<PrivateModelSessionConnectionResponse> {
   const result = connectSessionOptionsSchema.safeParse(sessionOptions);
   if (!result.success) {
     throw new Error(formatZodError(result.error));
@@ -85,7 +85,7 @@ export class Session {
   private static filterOptions(options: ChatOptions['options']) {
     return {
       ...(options?.temperature != null && { temperature: options.temperature }),
-      ...(options?.stop != null && { stop: [options.stop] }),
+      ...(options?.stop != null && { stop: options.stop }),
       ...(options?.seed != null && { seed: options.seed }),
       ...(options?.repeat_penalty !== undefined && {
         repeat_penalty: options.repeat_penalty,
@@ -128,13 +128,14 @@ export class Session {
 
   static convertOllamaEmbedResponse(
     response: OllamaEmbedResponse,
-  ): EmbedResponse {
+  ): EmbedResponse & { stream: false } {
     const id = Math.random().toString(36).substring(2, 15);
     const { model, embeddings } = response;
     return {
       id,
       model,
       embeddings,
+      stream: false,
     };
   }
 
@@ -144,9 +145,7 @@ export class Session {
       throw new Error(formatZodError(result.error));
     }
     return Session.convertOllamaChatResponse(
-      await this.client.chat(
-        Session.convertChatOptions(options) as ChatResponse,
-      ),
+      await this.client.chat(Session.convertChatOptions(options)),
     );
   }
 

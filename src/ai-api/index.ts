@@ -5,7 +5,7 @@ import {
   ConnectSessionOptions,
   ModelInfo,
   ModelInfoOptions,
-  ModelSession,
+  PrivateModelSessionConnectionResponse,
   RequestOptions,
 } from './types';
 
@@ -34,7 +34,7 @@ export const handleAPI: WindowAIHandler = {
     },
     connect: async ({
       model,
-    }: ConnectSessionOptions): Promise<ModelSession> => {
+    }: ConnectSessionOptions): Promise<PrivateModelSessionConnectionResponse> => {
       if (!models.isConnected()) {
         throw new Error('Not connected to Model');
       }

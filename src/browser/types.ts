@@ -40,11 +40,11 @@ export interface BrowserConfig {
 }
 
 export interface BrowserOptions {
-  width: number; // browser window's width, default is 1024
-  height: number; // browser window's height, default is 800
-  controlPanel: string; // control interface path to load
-  onNewWindow: (event: Event) => void; // custom webContents `new-window` event handler
-  debug: boolean; // toggle debug
+  width: number;
+  height: number;
+  controlPanel: string;
+  onNewWindow: (event: Event) => void;
+  debug: boolean;
 }
 
 export interface ChannelListener {

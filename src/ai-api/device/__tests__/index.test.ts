@@ -59,8 +59,8 @@ describe('session.chat', () => {
       messages: [{ role: 'user', content: 'Why is the sky blue' }],
       options: {
         temperature: 0.5,
-        stop: null,
-        seed: null,
+        stop: undefined,
+        seed: undefined,
         repeat_penalty: 1.0,
         presence_penalty: 0.0,
         frequency_penalty: 0.0,
@@ -148,8 +148,8 @@ describe('session.embed', () => {
       messages: [{ role: 'user', content: 'Why is the sky blue' }],
       options: {
         temperature: 0.5,
-        stop: null,
-        seed: null,
+        stop: undefined,
+        seed: undefined,
         repeat_penalty: 1.0,
         presence_penalty: 0.0,
         frequency_penalty: 0.0,

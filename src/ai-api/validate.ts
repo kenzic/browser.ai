@@ -8,9 +8,9 @@ export const messageSchema = z.object({
 });
 
 const optionsSchema = z.object({
-  temperature: z.number().nullable(),
-  stop: z.string().nullable(),
-  seed: z.number().nullable(),
+  temperature: z.number(),
+  stop: z.array(z.string()),
+  seed: z.number().optional(),
   repeat_penalty: z.number(),
   presence_penalty: z.number(),
   frequency_penalty: z.number(),

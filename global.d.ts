@@ -7,7 +7,7 @@ import {
 } from './src/ai-api/types';
 
 interface AIModel {
-  name: string;
+  model: string;
   enabled: boolean;
 }
 interface AIInterface {

@@ -81,7 +81,7 @@ ipcMain.handle(
   async (event: IpcMainInvokeEvent, model: ModelName) => {
     const store = (await getStore()) as FakeStoreType<StoreType>;
     const localModels = store.get('localModels') as StoreType['localModels'];
-    const idx = localModels.findIndex((m) => m.name === model);
+    const idx = localModels.findIndex((m) => m.model === model);
     // delete model
     if (idx !== -1) {
       localModels.splice(idx, 1);

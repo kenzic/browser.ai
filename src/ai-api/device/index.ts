@@ -12,11 +12,9 @@ import {
   ModelInfo,
   ModelInfoOptions,
   ModelName,
-  EnabledModelResponse,
+  EnabledModel,
 } from '../types';
 import { modelInfoOptionsSchema, modelNameSchema } from '../validate';
-
-const ollama = new Ollama({ host: config.get('ollamaEndpoint') });
 
 // interface ModelWhitelist {
 //   domain: string;
@@ -53,9 +51,7 @@ async function getUserPreferences(): Promise<UserPreferences> {
  * @param deviceModels - An array of models available on the device.
  * @returns A filtered array of models that are enabled by the user based on their preferences.
  */
-export async function getUserEnabledModels(
-  deviceModels: EnabledModelResponse[],
-) {
+export async function getUserEnabledModels(deviceModels: EnabledModel[]) {
   const userPreferences = await getUserPreferences();
   const nameSet = new Set(
     userPreferences.enabledModels.map((item) => item.model),
@@ -75,9 +71,10 @@ export async function getUserEnabledModels(
  * the device should be implemented before I have a clear understanding of the total scope of the functionality
  */
 export const models = {
+  // TODO: do I need this?
   _host: config.get('ollamaEndpoint'),
-  getClient: () => {
-    return ollama;
+  getClient: (client = new Ollama({ host: config.get('ollamaEndpoint') })) => {
+    return client;
   },
   async getInformation(options: ModelInfoOptions): Promise<ModelInfo> {
     const result = modelInfoOptionsSchema.safeParse(options);
@@ -126,18 +123,16 @@ export const models = {
   async listRunning(): Promise<ListResponse> {
     return this.getClient().ps();
   },
-  async listAvailable(): Promise<EnabledModelResponse[]> {
+  async listAvailable(): Promise<EnabledModel[]> {
     const response = await this.getClient().list();
-    return response.models.map(
-      (model: OllamaModelResponse): EnabledModelResponse => {
-        return {
-          model: cleanName(model.name),
-          enabled: true,
-        };
-      },
-    );
+    return response.models.map((model: OllamaModelResponse): EnabledModel => {
+      return {
+        model: cleanName(model.name),
+        enabled: true,
+      };
+    });
   },
-  async listEnabled(): Promise<EnabledModelResponse[]> {
+  async listEnabled(): Promise<EnabledModel[]> {
     const deviceModels = await this.listAvailable();
 
     const userEnabledModels = await getUserEnabledModels(deviceModels);

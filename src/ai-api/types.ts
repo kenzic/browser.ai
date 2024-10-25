@@ -21,8 +21,6 @@ export interface UserPreferences {
 
 export type ModelName = string;
 
-export type ConnectSessionOptions = z.infer<typeof connectSessionOptionsSchema>;
-
 export type Message = z.infer<typeof messageSchema>;
 
 export type ChatOptions = z.infer<typeof chatRequestSchema>;
@@ -49,7 +47,7 @@ interface ChatResponseUsage {
 }
 
 export interface ChatResponse {
-  id: string; // ?
+  id: string;
   choices: Array<ChatChoice>;
   created: Date;
   model: string;
@@ -60,6 +58,41 @@ export interface LoadModelStatus {
   status: string;
   message?: string;
 }
+
+export type EmbedOptions = z.infer<typeof embedOptionsSchema>;
+
+export interface EmbedResponse {
+  id: string;
+  model: string;
+  embeddings: number[][];
+}
+
+export interface RequestOptions {
+  model: ModelName;
+  silent?: boolean;
+}
+
+export type EnabledModel = {
+  enabled: boolean;
+  model: string;
+};
+
+export interface PermissionProperties {
+  models: () => Promise<EnabledModel[]>;
+  request: (options: RequestOptions) => Promise<boolean>;
+}
+
+export interface ModelSession {
+  chat: (options: ChatOptions) => Promise<ChatResponse>;
+  embed: (options: EmbedOptions) => Promise<EmbedResponse>;
+}
+
+export interface PrivateModelSessionConnectionResponse {
+  active: boolean;
+  model: string | null;
+}
+
+export type ConnectSessionOptions = z.infer<typeof connectSessionOptionsSchema>;
 
 export type ModelInfoOptions = z.infer<typeof modelInfoOptionsSchema>;
 
@@ -78,42 +111,21 @@ export interface ModelInfo {
   details: ModelDetails;
 }
 
-export type EmbedOptions = z.infer<typeof embedOptionsSchema>;
-
-export interface EmbedResponse {
-  id: string;
-  model: string;
-  embeddings: number[][];
-}
-
-export interface ModelSession {
-  chat: (options: ChatOptions) => Promise<ChatResponse>;
-  embed: (options: EmbedOptions) => Promise<EmbedResponse>;
-}
-
-export interface RequestOptions {
-  model: ModelName;
-  silent?: boolean;
-}
-
-export type EnabledModelResponse = {
-  enabled: boolean;
-  model: string;
-};
-
-export interface Permissions {
-  models: () => Promise<EnabledModelResponse[]>;
-  request: (options: RequestOptions) => Promise<boolean>;
-}
-
-export interface ModelProp {
+export interface ModelProperties {
   connect(options: ConnectSessionOptions): Promise<ModelSession>;
   info(options: ModelInfoOptions): Promise<ModelInfo>;
 }
 
 export interface WindowAIBinding {
-  permissions: Permissions;
-  model: ModelProp;
+  permissions: PermissionProperties;
+  model: ModelProperties;
 }
 
-export interface WindowAIHandler extends WindowAIBinding {}
+export interface WindowAIHandler {
+  permissions: PermissionProperties;
+  model: Omit<ModelProperties, 'connect'> & {
+    connect: (
+      options: ConnectSessionOptions,
+    ) => Promise<PrivateModelSessionConnectionResponse>;
+  };
+}
