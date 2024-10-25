@@ -7,7 +7,7 @@ Browser.AI is a browser prototype that provides an API on the `window` object, e
 
 ## Run
 - Download and start [Ollama](https://ollama.com/download).
-- Download browser
+- [Download browser](https://browser.christophermckenzie.com/)
 - Have fun
 
 ## Features
