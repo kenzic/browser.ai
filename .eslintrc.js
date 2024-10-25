@@ -15,6 +15,14 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     'react/function-component-definition': 'off',
     'import/prefer-default-export': 'off',
+    'react/require-default-props': [
+      'error',
+      {
+        forbidDefaultForRequired: true,
+        classes: 'defaultProps',
+        functions: 'defaultArguments',
+      },
+    ],
   },
   parserOptions: {
     ecmaVersion: 2022,

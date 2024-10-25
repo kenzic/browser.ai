@@ -15,7 +15,7 @@ import availableModelsData from '../../../ollama-models.json';
 
 import '../global.css';
 
-const SpinningEmoji = ({ emoji = '😊' }: { emoji: string }) => {
+const SpinningEmoji: React.FC<{ emoji?: string }> = ({ emoji = '😊' }) => {
   return (
     <div className="flex items-center justify-center bg-gray-100">
       <div className="text-2xl animate-spin">{emoji}</div>
@@ -92,7 +92,7 @@ const ModelRow: React.FC<ModelRowProps> = ({ model, isEnabled }) => {
 const ConnectionStatus = ({
   isConnected = false,
 }: {
-  isConnected: boolean;
+  isConnected?: boolean;
 }) => {
   // const [hostUrl, setHostUrl] = useState('');
 
