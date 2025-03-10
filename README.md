@@ -121,9 +121,9 @@ This is the actual runtime environment where AI models are executed. For this pr
 To set up the project locally, follow these steps:
 
 1. **Clone the repo:** git clone git@github.com:kenzic/browser.ai.git
-2. **Install dependencies:** Make sure you have [Node.js](https://nodejs.org/) 20+ installed, then run: `npm install`
-3. **Start the development server:** To run the app in development mode: `npm run start`
-4. **Build the app:** To create a production build of the app: `npm run package`
+2. **Install dependencies:** Make sure you have [Node.js](https://nodejs.org/) 20+ installed, then run: `pnpm install`
+3. **Start the development server:** To run the app in development mode: `pnpm start`
+4. **Build the app:** To create a production build of the app: `pnpm package`
 
 ### Contributing
 

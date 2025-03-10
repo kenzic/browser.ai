@@ -17,7 +17,7 @@ export const setupMenu = (browser: Browser) => {
   app.setAboutPanelOptions({
     applicationName: 'Browser.AI',
     applicationVersion: 'Wild Cat',
-    version: '1.0.0',
+    version: '0.1.3',
     credits,
     copyright: `©️ ${currentYear} Chris Mckenzie`,
     authors: ['Chris Mckenzie'],

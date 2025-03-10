@@ -1,6 +1,6 @@
 {
   "name": "browserai",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Prototype of a window.ai api for accessing on-device models in the browser",
   "keywords": [
     "browser",
@@ -108,7 +108,7 @@
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
-    "electron": "^31.7.7",
+    "electron": "^35.0.1",
     "electron-debug": "^4.1.0",
     "electron-log": "^5.3.2",
     "electron-notarize": "^1.2.2",
