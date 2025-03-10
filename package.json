@@ -271,5 +271,13 @@
       ".erb/dll/**"
     ],
     "logLevel": "quiet"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "core-js",
+      "core-js-pure",
+      "electron"
+    ]
   }
 }
