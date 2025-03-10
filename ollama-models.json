@@ -1,11 +1,23 @@
 [
   {
+    "title": "qwq",
+    "link": "https://ollama.com/library/qwq"
+  },
+  {
+    "title": "deepseek-r1",
+    "link": "https://ollama.com/library/deepseek-r1"
+  },
+  {
     "title": "llama3.2",
     "link": "https://ollama.com/library/llama3.2"
   },
   {
     "title": "llama3.1",
     "link": "https://ollama.com/library/llama3.1"
+  },
+  {
+    "title": "phi4",
+    "link": "https://ollama.com/library/phi4"
   },
   {
     "title": "gemma2",
@@ -108,8 +120,8 @@
     "link": "https://ollama.com/library/llama2-uncensored"
   },
   {
-    "title": "deepseek-coder",
-    "link": "https://ollama.com/library/deepseek-coder"
+    "title": "deepseek-coder-v2",
+    "link": "https://ollama.com/library/deepseek-coder-v2"
   },
   {
     "title": "starcoder2",
@@ -148,347 +160,7 @@
     "link": "https://ollama.com/library/starcoder"
   },
   {
-    "title": "tinyllama",
-    "link": "https://ollama.com/library/tinyllama"
-  },
-  {
-    "title": "vicuna",
-    "link": "https://ollama.com/library/vicuna"
-  },
-  {
-    "title": "codestral",
-    "link": "https://ollama.com/library/codestral"
-  },
-  {
-    "title": "llama2-chinese",
-    "link": "https://ollama.com/library/llama2-chinese"
-  },
-  {
-    "title": "wizard-vicuna-uncensored",
-    "link": "https://ollama.com/library/wizard-vicuna-uncensored"
-  },
-  {
-    "title": "codegeex4",
-    "link": "https://ollama.com/library/codegeex4"
-  },
-  {
-    "title": "granite-code",
-    "link": "https://ollama.com/library/granite-code"
-  },
-  {
-    "title": "nous-hermes2",
-    "link": "https://ollama.com/library/nous-hermes2"
-  },
-  {
-    "title": "openchat",
-    "link": "https://ollama.com/library/openchat"
-  },
-  {
-    "title": "aya",
-    "link": "https://ollama.com/library/aya"
-  },
-  {
-    "title": "wizardlm2",
-    "link": "https://ollama.com/library/wizardlm2"
-  },
-  {
-    "title": "all-minilm",
-    "link": "https://ollama.com/library/all-minilm"
-  },
-  {
-    "title": "codeqwen",
-    "link": "https://ollama.com/library/codeqwen"
-  },
-  {
-    "title": "tinydolphin",
-    "link": "https://ollama.com/library/tinydolphin"
-  },
-  {
-    "title": "wizardcoder",
-    "link": "https://ollama.com/library/wizardcoder"
-  },
-  {
-    "title": "stable-code",
-    "link": "https://ollama.com/library/stable-code"
-  },
-  {
-    "title": "openhermes",
-    "link": "https://ollama.com/library/openhermes"
-  },
-  {
-    "title": "bakllava",
-    "link": "https://ollama.com/library/bakllava"
-  },
-  {
-    "title": "qwen2-math",
-    "link": "https://ollama.com/library/qwen2-math"
-  },
-  {
-    "title": "qwen2.5-coder",
-    "link": "https://ollama.com/library/qwen2.5-coder"
-  },
-  {
-    "title": "llama3-gradient",
-    "link": "https://ollama.com/library/llama3-gradient"
-  },
-  {
-    "title": "stablelm2",
-    "link": "https://ollama.com/library/stablelm2"
-  },
-  {
-    "title": "deepseek-llm",
-    "link": "https://ollama.com/library/deepseek-llm"
-  },
-  {
-    "title": "wizard-math",
-    "link": "https://ollama.com/library/wizard-math"
-  },
-  {
-    "title": "neural-chat",
-    "link": "https://ollama.com/library/neural-chat"
-  },
-  {
-    "title": "snowflake-arctic-embed",
-    "link": "https://ollama.com/library/snowflake-arctic-embed"
-  },
-  {
-    "title": "llama3-chatqa",
-    "link": "https://ollama.com/library/llama3-chatqa"
-  },
-  {
-    "title": "phind-codellama",
-    "link": "https://ollama.com/library/phind-codellama"
-  },
-  {
-    "title": "nous-hermes",
-    "link": "https://ollama.com/library/nous-hermes"
-  },
-  {
-    "title": "xwinlm",
-    "link": "https://ollama.com/library/xwinlm"
-  },
-  {
-    "title": "sqlcoder",
-    "link": "https://ollama.com/library/sqlcoder"
-  },
-  {
-    "title": "dolphincoder",
-    "link": "https://ollama.com/library/dolphincoder"
-  },
-  {
-    "title": "yarn-llama2",
-    "link": "https://ollama.com/library/yarn-llama2"
-  },
-  {
-    "title": "mistral-large",
-    "link": "https://ollama.com/library/mistral-large"
-  },
-  {
-    "title": "reflection",
-    "link": "https://ollama.com/library/reflection"
-  },
-  {
-    "title": "wizardlm",
-    "link": "https://ollama.com/library/wizardlm"
-  },
-  {
-    "title": "smollm",
-    "link": "https://ollama.com/library/smollm"
-  },
-  {
-    "title": "deepseek-v2",
-    "link": "https://ollama.com/library/deepseek-v2"
-  },
-  {
-    "title": "moondream",
-    "link": "https://ollama.com/library/moondream"
-  },
-  {
-    "title": "starling-lm",
-    "link": "https://ollama.com/library/starling-lm"
-  },
-  {
-    "title": "falcon",
-    "link": "https://ollama.com/library/falcon"
-  },
-  {
-    "title": "samantha-mistral",
-    "link": "https://ollama.com/library/samantha-mistral"
-  },
-  {
-    "title": "solar",
-    "link": "https://ollama.com/library/solar"
-  },
-  {
-    "title": "orca2",
-    "link": "https://ollama.com/library/orca2"
-  },
-  {
-    "title": "glm4",
-    "link": "https://ollama.com/library/glm4"
-  },
-  {
-    "title": "stable-beluga",
-    "link": "https://ollama.com/library/stable-beluga"
-  },
-  {
-    "title": "dolphin-phi",
-    "link": "https://ollama.com/library/dolphin-phi"
-  },
-  {
-    "title": "llava-phi3",
-    "link": "https://ollama.com/library/llava-phi3"
-  },
-  {
-    "title": "wizardlm-uncensored",
-    "link": "https://ollama.com/library/wizardlm-uncensored"
-  },
-  {
-    "title": "hermes3",
-    "link": "https://ollama.com/library/hermes3"
-  },
-  {
-    "title": "yi-coder",
-    "link": "https://ollama.com/library/yi-coder"
-  },
-  {
-    "title": "yarn-mistral",
-    "link": "https://ollama.com/library/yarn-mistral"
-  },
-  {
-    "title": "llama-pro",
-    "link": "https://ollama.com/library/llama-pro"
-  },
-  {
-    "title": "internlm2",
-    "link": "https://ollama.com/library/internlm2"
-  },
-  {
-    "title": "medllama2",
-    "link": "https://ollama.com/library/medllama2"
-  },
-  {
-    "title": "meditron",
-    "link": "https://ollama.com/library/meditron"
-  },
-  {
-    "title": "nexusraven",
-    "link": "https://ollama.com/library/nexusraven"
-  },
-  {
-    "title": "nous-hermes2-mixtral",
-    "link": "https://ollama.com/library/nous-hermes2-mixtral"
-  },
-  {
-    "title": "codeup",
-    "link": "https://ollama.com/library/codeup"
-  },
-  {
-    "title": "everythinglm",
-    "link": "https://ollama.com/library/everythinglm"
-  },
-  {
-    "title": "llama3-groq-tool-use",
-    "link": "https://ollama.com/library/llama3-groq-tool-use"
-  },
-  {
-    "title": "magicoder",
-    "link": "https://ollama.com/library/magicoder"
-  },
-  {
-    "title": "stablelm-zephyr",
-    "link": "https://ollama.com/library/stablelm-zephyr"
-  },
-  {
-    "title": "codebooga",
-    "link": "https://ollama.com/library/codebooga"
-  },
-  {
-    "title": "mistrallite",
-    "link": "https://ollama.com/library/mistrallite"
-  },
-  {
-    "title": "falcon2",
-    "link": "https://ollama.com/library/falcon2"
-  },
-  {
-    "title": "duckdb-nsql",
-    "link": "https://ollama.com/library/duckdb-nsql"
-  },
-  {
-    "title": "wizard-vicuna",
-    "link": "https://ollama.com/library/wizard-vicuna"
-  },
-  {
-    "title": "megadolphin",
-    "link": "https://ollama.com/library/megadolphin"
-  },
-  {
-    "title": "notux",
-    "link": "https://ollama.com/library/notux"
-  },
-  {
-    "title": "goliath",
-    "link": "https://ollama.com/library/goliath"
-  },
-  {
-    "title": "open-orca-platypus2",
-    "link": "https://ollama.com/library/open-orca-platypus2"
-  },
-  {
-    "title": "notus",
-    "link": "https://ollama.com/library/notus"
-  },
-  {
-    "title": "minicpm-v",
-    "link": "https://ollama.com/library/minicpm-v"
-  },
-  {
-    "title": "bge-m3",
-    "link": "https://ollama.com/library/bge-m3"
-  },
-  {
-    "title": "mathstral",
-    "link": "https://ollama.com/library/mathstral"
-  },
-  {
-    "title": "dbrx",
-    "link": "https://ollama.com/library/dbrx"
-  },
-  {
-    "title": "nuextract",
-    "link": "https://ollama.com/library/nuextract"
-  },
-  {
-    "title": "alfred",
-    "link": "https://ollama.com/library/alfred"
-  },
-  {
-    "title": "firefunction-v2",
-    "link": "https://ollama.com/library/firefunction-v2"
-  },
-  {
-    "title": "solar-pro",
-    "link": "https://ollama.com/library/solar-pro"
-  },
-  {
-    "title": "reader-lm",
-    "link": "https://ollama.com/library/reader-lm"
-  },
-  {
-    "title": "bge-large",
-    "link": "https://ollama.com/library/bge-large"
-  },
-  {
-    "title": "deepseek-v2.5",
-    "link": "https://ollama.com/library/deepseek-v2.5"
-  },
-  {
-    "title": "paraphrase-multilingual",
-    "link": "https://ollama.com/library/paraphrase-multilingual"
-  },
-  {
-    "title": "bespoke-minicheck",
-    "link": "https://ollama.com/library/bespoke-minicheck"
+    "title": "deepseek-v3",
+    "link": "https://ollama.com/library/deepseek-v3"
   }
 ]
