@@ -16,6 +16,10 @@
     "link": "https://ollama.com/library/llama3.1"
   },
   {
+    "title": "llama4",
+    "link": "https://ollama.com/library/llama4"
+  },
+  {
     "title": "phi4",
     "link": "https://ollama.com/library/phi4"
   },
@@ -24,8 +28,16 @@
     "link": "https://ollama.com/library/gemma2"
   },
   {
+    "title": "gemma3",
+    "link": "https://ollama.com/library/gemma3"
+  },
+  {
     "title": "qwen2.5",
     "link": "https://ollama.com/library/qwen2.5"
+  },
+  {
+    "title": "qwen3",
+    "link": "https://ollama.com/library/qwen3"
   },
   {
     "title": "phi3.5",
