@@ -1,178 +1,155 @@
 [
   {
     "title": "qwq",
-    "link": "https://ollama.com/library/qwq"
+    "link": "https://ollama.com/library/qwq",
+    "tags": [
+      "family:alibaba"
+    ]
   },
   {
     "title": "deepseek-r1",
-    "link": "https://ollama.com/library/deepseek-r1"
+    "link": "https://ollama.com/library/deepseek-r1",
+    "tags": [
+      "family:deepseek"
+    ]
   },
   {
     "title": "llama3.2",
-    "link": "https://ollama.com/library/llama3.2"
+    "link": "https://ollama.com/library/llama3.2",
+    "tags": [
+      "tools",
+      "family:meta"
+    ]
+  },
+  {
+    "title": "llama3.3",
+    "link": "https://ollama.com/library/llama3.3",
+    "tags": [
+      "tools",
+      "family:meta"
+    ]
   },
   {
     "title": "llama3.1",
-    "link": "https://ollama.com/library/llama3.1"
+    "link": "https://ollama.com/library/llama3.1",
+    "tags": [
+      "tools",
+      "family:meta"
+    ]
   },
   {
     "title": "llama4",
-    "link": "https://ollama.com/library/llama4"
+    "link": "https://ollama.com/library/llama4",
+    "tags": [
+      "tools",
+      "family:meta"
+    ]
   },
   {
     "title": "phi4",
-    "link": "https://ollama.com/library/phi4"
+    "link": "https://ollama.com/library/phi4",
+    "tags": [
+      "family:microsoft"
+    ]
   },
   {
     "title": "gemma2",
-    "link": "https://ollama.com/library/gemma2"
+    "link": "https://ollama.com/library/gemma2",
+    "tags": [
+      "family:google"
+    ]
   },
   {
     "title": "gemma3",
-    "link": "https://ollama.com/library/gemma3"
+    "link": "https://ollama.com/library/gemma3",
+    "tags": [
+      "family:google",
+      "vision"
+    ]
   },
   {
     "title": "qwen2.5",
-    "link": "https://ollama.com/library/qwen2.5"
+    "link": "https://ollama.com/library/qwen2.5",
+    "tags": [
+      "tools",
+      "family:alibaba"
+    ]
   },
   {
     "title": "qwen3",
-    "link": "https://ollama.com/library/qwen3"
+    "link": "https://ollama.com/library/qwen3",
+    "tags": [
+      "tools",
+      "family:alibaba"
+    ]
   },
   {
     "title": "phi3.5",
-    "link": "https://ollama.com/library/phi3.5"
+    "link": "https://ollama.com/library/phi3.5",
+    "tags": [
+      "family:microsoft"
+    ]
   },
   {
-    "title": "nemotron-mini",
-    "link": "https://ollama.com/library/nemotron-mini"
-  },
-  {
-    "title": "mistral-small",
-    "link": "https://ollama.com/library/mistral-small"
+    "title": "mistral-small3.1",
+    "link": "https://ollama.com/library/mistral-small3.1",
+    "tags": [
+      "tools",
+      "vision",
+      "family:mistral"
+    ]
   },
   {
     "title": "mistral-nemo",
-    "link": "https://ollama.com/library/mistral-nemo"
-  },
-  {
-    "title": "deepseek-coder-v2",
-    "link": "https://ollama.com/library/deepseek-coder-v2"
+    "link": "https://ollama.com/library/mistral-nemo",
+    "tags": [
+      "tools",
+      "family:mistral"
+    ]
   },
   {
     "title": "mistral",
-    "link": "https://ollama.com/library/mistral"
+    "link": "https://ollama.com/library/mistral",
+    "tags": [
+      "tools",
+      "family:mistral"
+    ]
   },
   {
     "title": "mixtral",
-    "link": "https://ollama.com/library/mixtral"
+    "link": "https://ollama.com/library/mixtral",
+    "tags": [
+      "tools",
+      "family:mistral"
+    ]
   },
   {
-    "title": "codegemma",
-    "link": "https://ollama.com/library/codegemma"
-  },
-  {
-    "title": "command-r",
-    "link": "https://ollama.com/library/command-r"
-  },
-  {
-    "title": "command-r-plus",
-    "link": "https://ollama.com/library/command-r-plus"
-  },
-  {
-    "title": "llava",
-    "link": "https://ollama.com/library/llava"
-  },
-  {
-    "title": "llama3",
-    "link": "https://ollama.com/library/llama3"
-  },
-  {
-    "title": "gemma",
-    "link": "https://ollama.com/library/gemma"
-  },
-  {
-    "title": "qwen",
-    "link": "https://ollama.com/library/qwen"
-  },
-  {
-    "title": "qwen2",
-    "link": "https://ollama.com/library/qwen2"
+    "title": "smollm2",
+    "link": "https://ollama.com/library/smollm2",
+    "tags": [
+      "family:huggingface",
+      "tools"
+    ]
   },
   {
     "title": "phi3",
-    "link": "https://ollama.com/library/phi3"
-  },
-  {
-    "title": "llama2",
-    "link": "https://ollama.com/library/llama2"
-  },
-  {
-    "title": "codellama",
-    "link": "https://ollama.com/library/codellama"
-  },
-  {
-    "title": "nomic-embed-text",
-    "link": "https://ollama.com/library/nomic-embed-text"
-  },
-  {
-    "title": "dolphin-mixtral",
-    "link": "https://ollama.com/library/dolphin-mixtral"
-  },
-  {
-    "title": "phi",
-    "link": "https://ollama.com/library/phi"
-  },
-  {
-    "title": "mxbai-embed-large",
-    "link": "https://ollama.com/library/mxbai-embed-large"
-  },
-  {
-    "title": "llama2-uncensored",
-    "link": "https://ollama.com/library/llama2-uncensored"
+    "link": "https://ollama.com/library/phi3",
+    "tags": [
+      "family:microsoft"
+    ]
   },
   {
     "title": "deepseek-coder-v2",
-    "link": "https://ollama.com/library/deepseek-coder-v2"
-  },
-  {
-    "title": "starcoder2",
-    "link": "https://ollama.com/library/starcoder2"
-  },
-  {
-    "title": "dolphin-mistral",
-    "link": "https://ollama.com/library/dolphin-mistral"
-  },
-  {
-    "title": "zephyr",
-    "link": "https://ollama.com/library/zephyr"
-  },
-  {
-    "title": "dolphin-llama3",
-    "link": "https://ollama.com/library/dolphin-llama3"
-  },
-  {
-    "title": "yi",
-    "link": "https://ollama.com/library/yi"
-  },
-  {
-    "title": "orca-mini",
-    "link": "https://ollama.com/library/orca-mini"
-  },
-  {
-    "title": "llava-llama3",
-    "link": "https://ollama.com/library/llava-llama3"
-  },
-  {
-    "title": "mistral-openorca",
-    "link": "https://ollama.com/library/mistral-openorca"
-  },
-  {
-    "title": "starcoder",
-    "link": "https://ollama.com/library/starcoder"
+    "link": "https://ollama.com/library/deepseek-coder-v2",
+    "tags": [
+      "family:deepseek"
+    ]
   },
   {
     "title": "deepseek-v3",
-    "link": "https://ollama.com/library/deepseek-v3"
+    "link": "https://ollama.com/library/deepseek-v3",
+    "tags": [
+      "family:deepseek"
+    ]
   }
 ]
