@@ -16,12 +16,12 @@ export const setupMenu = (browser: Browser) => {
 
   app.setAboutPanelOptions({
     applicationName: 'Browser.AI',
-    applicationVersion: 'Wild Cat',
-    version: '0.1.4',
+    applicationVersion: 'Mount Abraham',
+    version: '0.1.5',
     credits,
     copyright: `©️ ${currentYear} Chris Mckenzie`,
     authors: ['Chris Mckenzie'],
-    website: 'https://browser-ai.christophermckenzie.com',
+    website: 'https://browser.christophermckenzie.com/',
   });
 
   const template = [
@@ -76,6 +76,11 @@ export const setupMenu = (browser: Browser) => {
       role: 'fileMenu',
       submenu: [
         {
+          label: 'Address Bar',
+          accelerator: 'Command+L',
+          click: () => browser.focusAddressBar(),
+        },
+        {
           label: 'New Tab',
           accelerator: 'CmdOrCtrl+T',
           nonNativeMacOSRole: true,
@@ -83,7 +88,7 @@ export const setupMenu = (browser: Browser) => {
         },
         {
           label: 'Close tab',
-          accelerator: 'CmdOrCtrl+Shift+W',
+          accelerator: 'Command+W',
           nonNativeMacOSRole: true,
           click: () => {
             const tabID = tab()?.id;

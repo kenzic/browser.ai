@@ -20,7 +20,9 @@ import {
 } from '../validate';
 
 import config from '../../lib/config';
+import { getModelMetaData } from '../../lib/utils/ollama';
 import { formatZodError } from '../../lib/utils/format-zod-error';
+import { models as modelInstance } from './index';
 
 export async function connectSession(
   sessionOptions: ConnectSessionOptions,
@@ -30,6 +32,17 @@ export async function connectSession(
   if (!result.success) {
     throw new Error(formatZodError(result.error));
   }
+
+  if (
+    !modelInstance.isConnected() ||
+    !modelInstance.isEnabled(result.data.model)
+  ) {
+    return {
+      active: false,
+      model: null,
+    };
+  }
+
   try {
     // force ollama to load model. This is a workaround for the issue where the model is not loaded when the session is created.
     await ollamaClient.chat({
@@ -67,7 +80,7 @@ export class Session {
   static convertChatOptions(
     chatOptions: ChatOptions,
   ): OllamaChatRequest & { stream: false } {
-    const { model, messages, format, options } = chatOptions;
+    const { model, messages, format, tools, options } = chatOptions;
 
     const filteredOptions = options
       ? Session.filterOptions(options)
@@ -78,6 +91,7 @@ export class Session {
       model,
       messages,
       ...(format && { format }),
+      ...(tools && { tools }),
       ...(filteredOptions && { options: filteredOptions }),
     };
   }
@@ -144,9 +158,20 @@ export class Session {
     if (!result.success) {
       throw new Error(formatZodError(result.error));
     }
-    return Session.convertOllamaChatResponse(
-      await this.client.chat(Session.convertChatOptions(options)),
+
+    if (options.tools) {
+      const metadata = getModelMetaData(options.model);
+      if (metadata?.tags?.includes('tools') !== true) {
+        throw new Error(
+          `Model ${options.model} does not support tools. Please use a different model.`,
+        );
+      }
+    }
+
+    const response = await this.client.chat(
+      Session.convertChatOptions(options),
     );
+    return Session.convertOllamaChatResponse(response);
   }
 
   async embed(options: EmbedOptions): Promise<EmbedResponse> {

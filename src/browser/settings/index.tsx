@@ -14,6 +14,14 @@ import {
 
 import '../global.css';
 
+type ModelConfigureation = {
+  title: string;
+  link: string;
+  tags: string[];
+};
+
+type ModelsConfigurationFile = Array<ModelConfigureation>;
+
 const SpinningEmoji: React.FC<{ emoji?: string }> = ({ emoji = '😊' }) => {
   return (
     <div className="flex items-center justify-center bg-gray-100">
@@ -149,9 +157,22 @@ const TableSkeleton = () => {
   );
 };
 
+function getModelFamily(model: ModelConfigureation) {
+  return model.tags.find((tag) => tag.includes('family:')) ?? 'unknown';
+}
+
 export const Display = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [availableModels, setAvailableModels] = useState(new Set<string>([]));
+
+  const groupedModels: [string, Array<ModelConfigureation>][] = Object.entries(
+    Object.groupBy(
+      availableModelsData as ModelsConfigurationFile,
+      (model: ModelConfigureation) => {
+        return getModelFamily(model);
+      },
+    ),
+  );
 
   useEffect(() => {
     async function checkIsConnectedToOllama() {
@@ -214,14 +235,32 @@ export const Display = () => {
         </TableHeader>
         <TableBody>
           {isConnected &&
-            availableModelsData.map((model: { title: string }) => {
-              return (
-                <ModelRow
-                  key={model.title}
-                  model={model}
-                  isEnabled={availableModels.has(model.title)}
-                />
-              );
+            groupedModels.map(([family, models]) => {
+              const groupDisplay = [
+                <TableRow
+                  key={family}
+                  className="border-0 hover:bg-transparent"
+                >
+                  <TableCell
+                    colSpan={3}
+                    className="font-bold text-lg bg-gradient-to-tl to-teal-500 from-purple-400  inline-block text-transparent bg-clip-text p-1 "
+                  >
+                    {family.replace('family:', '')}
+                  </TableCell>
+                </TableRow>,
+              ];
+              models
+                .sort((a, b) => b.title.localeCompare(a.title))
+                .forEach((model) => {
+                  groupDisplay.push(
+                    <ModelRow
+                      key={model.title}
+                      model={model}
+                      isEnabled={availableModels.has(model.title)}
+                    />,
+                  );
+                });
+              return groupDisplay;
             })}
           {!isConnected &&
             Array.from({ length: 6 }).map((_, index) => (

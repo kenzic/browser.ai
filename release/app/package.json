@@ -1,6 +1,6 @@
 {
   "name": "browser-ai",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Prototype of a window.ai api for accessing on-device models in the browser",
   "license": "MIT",
   "author": {

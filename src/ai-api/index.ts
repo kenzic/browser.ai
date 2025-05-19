@@ -41,7 +41,9 @@ export const handleAPI: WindowAIHandler = {
       const result = await connectSession({ model });
       // @ts-ignore - Come back to this
       if (!result.active) {
-        throw Error('Session could not be created. Confirm Ollama is running.');
+        throw Error(
+          'Session could not be created. Confirm you have permissions to access model, and Ollama is running.',
+        );
       }
       return result;
     },

@@ -41,7 +41,7 @@ const preloadPrivatePath = app.isPackaged
   : path.join(__dirname, '../../.erb/dll/preloadPrivate.js');
 
 class ControlView extends WebContentsView {
-  constructor(controlOptions: object) {
+  constructor(controlOptions?: object) {
     super({
       webPreferences: {
         preload: preloadPrivatePath,
@@ -55,6 +55,7 @@ class ControlView extends WebContentsView {
     });
 
     this.webContents.loadURL(resolveHtmlPath('controls.html'));
+    // this.webContents.openDevTools();
   }
 
   destory() {
@@ -151,7 +152,7 @@ export default class Browser extends EventEmitter {
     // ipc channel
     this.ipc = null;
 
-    this.controlView = new ControlView({});
+    this.controlView = new ControlView();
 
     this.win.on('resized', () => {
       this.setContentBounds();
@@ -262,7 +263,7 @@ export default class Browser extends EventEmitter {
       x: 0,
       y: 0,
       width: contentBounds.width,
-      height: 94,
+      height: 82,
     };
   }
 
@@ -495,6 +496,14 @@ export default class Browser extends EventEmitter {
 
     if (this.tabs.length === 0) {
       this.newTab();
+    }
+  }
+
+  focusAddressBar() {
+    const webContents = this.controlView?.webContents;
+    if (webContents) {
+      webContents.focus();
+      webContents.send('focus-address-bar');
     }
   }
 

@@ -25,6 +25,8 @@ export type Message = z.infer<typeof messageSchema>;
 
 export type ChatOptions = z.infer<typeof chatRequestSchema>;
 
+export type Tools = ChatOptions['tools'];
+
 export type FinishReason =
   | 'stop'
   | 'length'

@@ -18,11 +18,30 @@ const optionsSchema = z.object({
   top_p: z.number(),
 });
 
+const toolSchema = z.object({
+  type: z.literal('function'),
+  function: z.object({
+    name: z.string(),
+    description: z.string(),
+    parameters: z.object({
+      type: z.literal('object'),
+      required: z.array(z.string()),
+      properties: z.record(
+        z.object({
+          type: z.string(),
+          description: z.string(),
+        }),
+      ),
+    }),
+  }),
+});
+
 export const chatRequestSchema = z.object({
   model: modelNameSchema,
   messages: z.array(messageSchema),
   // stream: z.boolean().optional(),
   format: z.string().optional(),
+  tools: z.array(toolSchema).optional(),
   options: optionsSchema.partial().optional(),
 });
 
