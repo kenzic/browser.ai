@@ -5,7 +5,7 @@ import {
 } from 'ollama';
 import { models } from '../index';
 import { Session, connectSession } from '../session';
-import { ChatOptions, EmbedOptions } from '../../types';
+import { ChatOptions, EmbedOptions, Tools } from '../../types';
 
 describe('connectSession', () => {
   test('should create a session and return active status', async () => {
@@ -69,6 +69,52 @@ describe('session.chat', () => {
       },
     };
 
+    const result = await session.chat(options);
+
+    const ollama = new Ollama();
+    const ollamaResponse = await ollama.chat(
+      Session.convertChatOptions(options),
+    );
+
+    expect(result).toEqual({
+      ...Session.convertOllamaChatResponse(ollamaResponse),
+      id: expect.any(String),
+    });
+  });
+
+  test('should support tools', async () => {
+    // eslint-disable-next-line
+    const addFunc = (a: number, b: number) => a + b;
+
+    const addTool = {
+      type: 'function',
+      function: {
+        name: 'addFunc',
+        description: 'Add two numbers together.',
+        parameters: {
+          type: 'object',
+          required: ['a', 'b'],
+          properties: {
+            a: {
+              type: 'number',
+              description: 'The first number to add.',
+            },
+            b: {
+              type: 'number',
+              description: 'The second number to add.',
+            },
+          },
+        },
+      },
+    };
+    // eslint-disable-next-line no-underscore-dangle
+    const session = Session.create();
+
+    const options: ChatOptions = {
+      model: 'llama3.2',
+      messages: [{ role: 'user', content: 'Add 1 and 2' }],
+      tools: [addTool] as ChatOptions['tools'],
+    };
     const result = await session.chat(options);
 
     const ollama = new Ollama();
