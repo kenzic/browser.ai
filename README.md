@@ -48,6 +48,45 @@ if(await window.ai.permissions.request({ model: 'llama3.2', silent: true })) {
 	console.log(response)
 }
 ```
+**Tool support for Chat**
+```js
+const addFunc = (a, b) => a + b;
+
+const addTool = {
+  type: "function",
+  function: {
+    name: "addFunc",
+    description: "Add two numbers together.",
+    parameters: {
+      type: "object",
+      required: ["a", "b"],
+      properties: {
+        a: {
+          type: "number",
+          description: "The first number to add.",
+        },
+        b: {
+          type: "number",
+          description: "The second number to add.",
+        },
+      },
+    },
+  },
+}
+
+if(await window.ai.permissions.request({ model: 'llama3.2', silent: true })) {
+	const session = await window.ai.model.connect({ model: 'llama3.2' });
+	const response = await session.chat({ messages: [{ role: 'user', content: 'add 1 and 2' }], tools: [addTool] })
+
+  if (response.choices[0].message.tool_calls) {
+    const { name, arguments } = response.choices[0].message.tool_calls[0].function;
+    const result = addFunc(arguments.a, arguments.b);
+    console.log(`Function ${name} called with result: ${result}`);
+  }
+
+	console.log(response)
+}
+```
 **Generate Embeddings**
 ```js
 const docsToEmbed = [...]
@@ -108,7 +147,7 @@ This is the actual runtime environment where AI models are executed. For this pr
 
 ### Roadmap
 - [ ] Add support for streaming.
-- [ ] Add function-calling support for models.
+- [x] Add function-calling support for models.
 - [ ] Add support for for text completion.
 - [ ] Add support (should work now, but not tested) for image generation.
 - [ ] Add support for other runtimes (device adapters)

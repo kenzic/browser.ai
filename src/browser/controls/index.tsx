@@ -20,14 +20,7 @@ import { TabID } from '../types';
 // eslint-disable-next-line import/prefer-default-export
 export function Control() {
   const addressBarRef = React.useRef<HTMLInputElement>(null);
-  const { tabs, tabIDs, activeID } = useConnect({
-    onTabsUpdate: (value) => {
-      console.log('onTabsUpdate', value);
-    },
-    onTabActive: (value) => {
-      console.log('onTabActive', value);
-    },
-  });
+  const { tabs, tabIDs, activeID } = useConnect();
 
   const { url, href, canGoForward, canGoBack, isLoading } =
     tabs[activeID as TabID] || {};
