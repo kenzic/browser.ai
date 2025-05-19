@@ -22,6 +22,7 @@ import {
 import config from '../../lib/config';
 import { getModelMetaData } from '../../lib/utils/ollama';
 import { formatZodError } from '../../lib/utils/format-zod-error';
+import { models as modelInstance } from './index';
 
 export async function connectSession(
   sessionOptions: ConnectSessionOptions,
@@ -32,7 +33,15 @@ export async function connectSession(
     throw new Error(formatZodError(result.error));
   }
 
-  // FIXME: confirm model is available in permissions
+  if (
+    !modelInstance.isConnected() ||
+    !modelInstance.isEnabled(result.data.model)
+  ) {
+    return {
+      active: false,
+      model: null,
+    };
+  }
 
   try {
     // force ollama to load model. This is a workaround for the issue where the model is not loaded when the session is created.
