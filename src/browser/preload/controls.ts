@@ -27,4 +27,8 @@ export const controls = {
     ipcRenderer.on('tabs-update', callback);
     return () => ipcRenderer.removeListener('tabs-update', callback);
   },
+  onFocusAddressBar: (callback: any) => {
+    ipcRenderer.on('focus-address-bar', callback);
+    return () => ipcRenderer.removeListener('focus-address-bar', callback);
+  },
 };

@@ -34,6 +34,7 @@ interface Controls {
   controlReady: () => void;
   onActiveUpdate: (callback: (...args: any[]) => void) => () => void;
   onTabsUpdate: (callback: (...args: any[]) => void) => () => void;
+  onFocusAddressBar: (callback: () => void) => () => void;
 }
 
 interface Device {
